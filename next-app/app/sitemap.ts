@@ -45,12 +45,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${BASE}/services/purple-x/purpleSOC/questionnaire`,
-      lastModified: NOW,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
       url: `${BASE}/services/purple-x/purplesentinel`,
       lastModified: NOW,
       changeFrequency: "monthly",
@@ -178,6 +172,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: NOW,
       changeFrequency: "yearly",
       priority: 0.3,
+    },
+    {
+      url: `${BASE}/blog`,
+      lastModified: NOW,
+      changeFrequency: "weekly",
+      priority: 0.6,
     },
   ];
 }

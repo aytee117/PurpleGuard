@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Linkedin, Twitter, Youtube, Phone, MapPin, Mail } from "lucide-react";
 
 export default function Footer() {
@@ -12,9 +13,11 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Link href="/">
               <div className="mb-6 cursor-pointer">
-                <img
+                <Image
                   src="/logo.png"
                   alt="PurpleGuard"
+                  width={160}
+                  height={40}
                   className="h-10 w-auto brightness-0 invert"
                 />
                 <p className="text-sm text-purple-300 mt-2 font-medium">
