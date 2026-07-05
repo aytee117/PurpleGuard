@@ -7,3 +7,4 @@ vite.config.ts.*
 next-app/.next
 .next
 next-app/npm-cache/
+CLAUDE.md
