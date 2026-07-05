@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Twitter, Youtube, Phone, MapPin, Mail } from "lucide-react";
+import { CALENDLY_LINK } from "@/lib/services-data";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -109,12 +110,17 @@ export default function Footer() {
                 { label: "Solutions", href: "/solutions" },
                 { label: "Pricing", href: "/pricing" },
                 { label: "Resources", href: "/blog" },
-                { label: "Contact", href: "/booking" },
+                { label: "Contact", href: CALENDLY_LINK },
                 { label: "PurpleVAPT Calculator", href: "/services/purple-x/purplevapt/calculator" },
                 { label: "SOC Sizing Tool", href: "/services/purple-x/purplesoc/questionnaire" },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="text-slate-400 hover:text-white transition-colors">
+                  <Link
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="text-slate-400 hover:text-white transition-colors"
+                  >
                     {item.label}
                   </Link>
                 </li>
