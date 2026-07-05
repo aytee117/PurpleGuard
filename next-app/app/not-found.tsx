@@ -4,7 +4,7 @@ import { Shield, ArrowLeft, Home } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#000033] via-slate-900 to-[#000033] flex items-center justify-center px-4">
+    <main className="min-h-screen bg-gradient-to-br from-[#0b0a12] via-slate-900 to-[#0b0a12] flex items-center justify-center px-4">
       <div className="max-w-lg w-full text-center">
         <div className="flex justify-center mb-8">
           <div className="relative">
@@ -30,7 +30,7 @@ export default function NotFound() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <Link href="/">
-            <Button size="lg" className="bg-[#6633cc] hover:bg-[#5522bb] text-white px-8">
+            <Button size="lg" className="bg-[#6633cc] hover:bg-[#5528ad] text-white px-8">
               <Home className="h-5 w-5 mr-2" />
               Back to Home
             </Button>

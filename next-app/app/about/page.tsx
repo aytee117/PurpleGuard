@@ -161,7 +161,7 @@ export default function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#000033] via-slate-900 to-[#000033] overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0b0a12] via-slate-900 to-[#0b0a12] overflow-hidden">
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-500 rounded-full blur-3xl" />
@@ -431,7 +431,7 @@ export default function AboutPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-[#000033] via-[#6633cc] to-[#000033] relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-[#0b0a12] via-[#6633cc] to-[#0b0a12] relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-400 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-400 rounded-full blur-3xl" />
@@ -448,7 +448,7 @@ export default function AboutPage() {
             <Button
               asChild
               size="lg"
-              className="bg-white text-[#000033] hover:bg-purple-50 shadow-lg"
+              className="bg-white text-[#0b0a12] hover:bg-purple-50 shadow-lg"
             >
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                 <Calendar className="w-5 h-5 mr-2" />

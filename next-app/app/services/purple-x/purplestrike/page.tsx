@@ -77,7 +77,7 @@ export default function PurpleStrikePage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calendar className="h-5 w-5 mr-2" /> Request a Red Team Engagement
                 </Button>
               </a>
@@ -227,7 +227,7 @@ export default function PurpleStrikePage() {
           <p className="text-xl text-slate-300 mb-8">PurpleStrike helps you find and fix security weaknesses before adversaries exploit them.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Calendar className="h-5 w-5 mr-2" /> Start an Engagement
               </Button>
             </a>

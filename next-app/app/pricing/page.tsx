@@ -50,7 +50,7 @@ const bundles = [
     subtitle: "Managed-X + Purple-X",
     includes: ["Managed-X core services", "PurpleSOC or PurpleSentinel (MDR)", "PurpleVAPT or PurpleConfig", "Threat intelligence and exposure monitoring"],
     outcome: "End-to-end protection, detection, and response under one MSSP.",
-    color: "from-[#ff6633] to-orange-600",
+    color: "from-purple-600 to-purple-400",
   },
 ];
 
@@ -63,19 +63,19 @@ export default function PricingPage() {
     <div className="min-h-screen bg-slate-50">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#000033] via-[#6633cc] to-[#000033] overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0b0a12] via-[#6633cc] to-[#0b0a12] overflow-hidden">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
             <Badge className="bg-purple-500/20 text-purple-300 border-purple-400/30 mb-6">Pricing</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Pricing, Without the Confusion</h1>
-            <p className="text-2xl text-[#ff6633] font-semibold mb-6">Clear. Scalable. Built for SMEs.</p>
+            <p className="text-2xl text-purple-200 font-semibold mb-6">Clear. Scalable. Built for SMEs.</p>
             <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-3xl mx-auto">
               PurpleGuard pricing is subscription-based, risk-aligned, and designed to scale with your business—without hidden costs or tool sprawl.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="mailto:hello@purpleguard.io?subject=Custom Quote Request">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Mail className="h-5 w-5 mr-2" /> Get a Custom Quote
                 </Button>
               </a>
@@ -225,7 +225,7 @@ export default function PricingPage() {
       </section>
 
       {/* Bundles */}
-      <section className="py-16 bg-gradient-to-br from-[#000033] to-[#6633cc]">
+      <section className="py-16 bg-gradient-to-br from-[#0b0a12] to-[#6633cc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Do You Offer Bundles?</h2>
@@ -308,12 +308,12 @@ export default function PricingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#000033] to-[#6633cc]">
+      <section className="py-20 bg-gradient-to-br from-[#0b0a12] to-[#6633cc]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Know your risk. Pay only for what you need.</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="mailto:hello@purpleguard.io?subject=Custom Quote Request">
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Mail className="h-5 w-5 mr-2" /> Get a Custom Quote
               </Button>
             </a>

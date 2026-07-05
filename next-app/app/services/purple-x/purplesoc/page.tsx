@@ -77,7 +77,7 @@ export default function PurpleSOCPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href={QUESTIONNAIRE_LINK}>
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calendar className="h-5 w-5 mr-2" /> Start the Discovery Questionnaire
                 </Button>
               </Link>
@@ -253,12 +253,12 @@ export default function PurpleSOCPage() {
           <p className="text-xl text-slate-300 mb-8">Start your 24/7 managed security operations today.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href={QUESTIONNAIRE_LINK}>
-              <Button size="lg" className="bg-[#7c3aed] hover:bg-[#7c3aed]/90 text-white">
+              <Button size="lg" className="bg-[#5528ad] hover:bg-[#5528ad]/90 text-white">
                 Start the Discovery Questionnaire →
               </Button>
             </Link>
             <Link href={QUESTIONNAIRE_LINK}>
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Calendar className="h-5 w-5 mr-2" /> Size my SOC
               </Button>
             </Link>

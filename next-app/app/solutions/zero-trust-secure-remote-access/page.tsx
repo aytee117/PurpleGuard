@@ -72,7 +72,7 @@ export default function ZeroTrustPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calendar className="h-5 w-5 mr-2" /> Plan Your Zero Trust Journey
                 </Button>
               </a>
@@ -193,7 +193,7 @@ export default function ZeroTrustPage() {
           <p className="text-xl text-slate-300 mb-8">PurpleGuard delivers a managed Zero Trust access architecture for modern workforces.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Calendar className="h-5 w-5 mr-2" /> Plan Your Zero Trust Journey
               </Button>
             </a>
