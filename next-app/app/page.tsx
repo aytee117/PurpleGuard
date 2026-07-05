@@ -236,7 +236,7 @@ export default function HomePage() {
                 </span>
               </div>
             </Link>
-            <Link href="/services/purple-x/purpleSOC/questionnaire" className="group">
+            <Link href="/services/purple-x/purplesoc/questionnaire" className="group">
               <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-purple-500/60 backdrop-blur-sm p-8 transition-all hover:-translate-y-1 hover:shadow-2xl">
                 <div className="w-14 h-14 rounded-xl bg-purple-500/15 border border-purple-400/30 flex items-center justify-center mb-6">
                   <Calculator className="h-7 w-7 text-purple-300" />

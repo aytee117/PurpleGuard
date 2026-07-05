@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     "Interactive SOC sizing tool. Calculate your LDS, EPS, storage, and indicative monthly/annual pricing across all sites — Managed, Co-Managed, or Self-Managed.",
   alternates: {
     canonical:
-      "https://www.purpleguard.io/services/purple-x/purpleSOC/questionnaire",
+      "https://www.purpleguard.io/services/purple-x/purplesoc/questionnaire",
   },
   openGraph: {
     title: "PurpleSOC Discovery Questionnaire — PurpleGuard",
     description:
       "Size your SOC in 5 minutes. LDS, EPS, storage, and indicative pricing.",
-    url: "https://www.purpleguard.io/services/purple-x/purpleSOC/questionnaire",
+    url: "https://www.purpleguard.io/services/purple-x/purplesoc/questionnaire",
     images: [{ url: OG, width: 1200, height: 630, alt: "PurpleSOC Discovery Questionnaire" }],
   },
   twitter: {
@@ -41,7 +41,7 @@ export default function QuestionnairePage() {
     { name: "PurpleSOC", url: "/services/purple-x/purplesoc" },
     {
       name: "Discovery Questionnaire",
-      url: "/services/purple-x/purpleSOC/questionnaire",
+      url: "/services/purple-x/purplesoc/questionnaire",
     },
   ]);
 

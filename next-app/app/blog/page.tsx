@@ -105,7 +105,7 @@ export default function BlogPage() {
                   VAPT Calculator
                 </Link>{" "}
                 or{" "}
-                <Link href="/services/purple-x/purpleSOC/questionnaire" className="text-purple-400 hover:text-purple-300 underline">
+                <Link href="/services/purple-x/purplesoc/questionnaire" className="text-purple-400 hover:text-purple-300 underline">
                   SOC Sizing Tool
                 </Link>
                 .

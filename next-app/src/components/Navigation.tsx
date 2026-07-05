@@ -49,7 +49,7 @@ const solutions = [
 const resourcesItems = [
   { name: "Blog", tagline: "Cybersecurity insights & news", href: "/blog", icon: BookOpen, color: "from-purple-500 to-indigo-600", badge: "Coming Soon" },
   { name: "VAPT Calculator", tagline: "Estimate your penetration testing scope", href: "/services/purple-x/purplevapt/calculator", icon: Calculator, color: "from-emerald-500 to-teal-600" },
-  { name: "SOC Sizing Tool", tagline: "Discover the right SOC model for you", href: "/services/purple-x/purpleSOC/questionnaire", icon: ClipboardCheck, color: "from-blue-500 to-cyan-600" },
+  { name: "SOC Sizing Tool", tagline: "Discover the right SOC model for you", href: "/services/purple-x/purplesoc/questionnaire", icon: ClipboardCheck, color: "from-blue-500 to-cyan-600" },
 ];
 
 const navigationItems = [
