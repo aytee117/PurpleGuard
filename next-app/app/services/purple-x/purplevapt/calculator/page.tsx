@@ -323,7 +323,7 @@ export default function CalculatorPage() {
   }, [result]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#000033] via-slate-900 to-[#000033] relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#0b0a12] via-slate-900 to-[#0b0a12] relative overflow-hidden">
       <div className="fixed inset-0 pointer-events-none z-0" style={{
         background: "radial-gradient(ellipse 55% 45% at 8% 18%, rgba(127,119,221,0.13) 0%, transparent 60%), radial-gradient(ellipse 45% 38% at 92% 82%, rgba(13,148,136,0.07) 0%, transparent 60%)"
       }} />

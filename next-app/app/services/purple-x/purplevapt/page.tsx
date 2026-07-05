@@ -78,7 +78,7 @@ export default function PurpleVAPTPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/services/purple-x/purplevapt/calculator">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calculator className="h-5 w-5 mr-2" /> Estimate Your VAPT Cost
                 </Button>
               </Link>
@@ -264,7 +264,7 @@ export default function PurpleVAPTPage() {
           </div>
           <div className="text-center mt-8">
             <Link href="/services/purple-x/purplevapt/calculator">
-              <Button size="lg" className="bg-[#6633cc] hover:bg-[#5522bb] text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#5528ad] text-white">
                 <Calculator className="h-5 w-5 mr-2" /> Estimate Cost
               </Button>
             </Link>
@@ -297,7 +297,7 @@ export default function PurpleVAPTPage() {
           </div>
           <div className="text-center mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/services/purple-x/purplevapt/calculator">
-              <Button className="bg-[#6633cc] hover:bg-[#5522bb] text-white">
+              <Button className="bg-[#6633cc] hover:bg-[#5528ad] text-white">
                 <Calculator className="h-4 w-4 mr-2" /> Indicative Pricing Calculator
               </Button>
             </Link>
@@ -382,7 +382,7 @@ export default function PurpleVAPTPage() {
           <p className="text-xl text-slate-300 mb-8">Get proactive about your security posture with continuous vulnerability assessment and penetration testing.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/services/purple-x/purplevapt/calculator">
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Calculator className="h-5 w-5 mr-2" /> Get a Custom Quote
               </Button>
             </Link>

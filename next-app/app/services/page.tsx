@@ -63,11 +63,11 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-slate-50">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#000033] via-[#6633cc] to-[#000033] overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0b0a12] via-[#6633cc] to-[#0b0a12] overflow-hidden">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="bg-[#ff6633]/20 text-[#ff6633] border-[#ff6633]/30 mb-6">Full Service Portfolio</Badge>
+            <Badge className="bg-purple-500/20 text-purple-200 border-purple-400/40 mb-6">Full Service Portfolio</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Complete Managed Security — Purple X & Managed X
             </h1>
@@ -76,7 +76,7 @@ export default function ServicesPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calendar className="h-5 w-5 mr-2" />
                   Book Discovery Call
                 </Button>
@@ -90,7 +90,7 @@ export default function ServicesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
               {["7 Purple X cybersecurity services", "8 Managed X infrastructure services", "Subscription-based, no lock-ins", "24/7 monitoring & compliance-ready"].map((item) => (
                 <div key={item} className="flex items-start gap-2 bg-white/5 rounded-lg p-4">
-                  <CheckCircle className="h-5 w-5 text-[#ff6633] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-purple-300 flex-shrink-0 mt-0.5" />
                   <span className="text-white text-sm">{item}</span>
                 </div>
               ))}
@@ -182,7 +182,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#000033] to-[#6633cc]">
+      <section className="py-20 bg-gradient-to-br from-[#0b0a12] to-[#6633cc]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Not sure where to start?</h2>
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
@@ -190,7 +190,7 @@ export default function ServicesPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Calendar className="h-5 w-5 mr-2" /> Book Free Consultation
               </Button>
             </a>

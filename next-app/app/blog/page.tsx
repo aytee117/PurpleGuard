@@ -43,7 +43,7 @@ export default function BlogPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
 
-      <main className="min-h-screen bg-gradient-to-br from-[#000033] via-slate-900 to-[#000033]">
+      <main className="min-h-screen bg-gradient-to-br from-[#0b0a12] via-slate-900 to-[#0b0a12]">
         {/* Hero */}
         <section className="py-24 px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -65,7 +65,7 @@ export default function BlogPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <a href="mailto:hello@purpleguard.io?subject=Notify me when the blog launches">
-                <Button size="lg" className="bg-[#6633cc] hover:bg-[#5522bb] text-white px-8">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#5528ad] text-white px-8">
                   <Bell className="h-5 w-5 mr-2" />
                   Notify Me at Launch
                 </Button>

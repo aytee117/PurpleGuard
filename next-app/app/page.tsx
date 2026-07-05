@@ -123,23 +123,29 @@ export default function HomePage() {
       />
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#000033] via-slate-900 to-[#000033] overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <Image
-            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080"
-            alt=""
-            fill
-            priority
-            className="object-cover opacity-10"
-            sizes="100vw"
-          />
-        </div>
+      <section className="relative bg-[#0b0a12] overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-100"
+          aria-hidden="true"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 50% 0%, #000 40%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 0%, #000 40%, transparent 100%)",
+          }}
+        />
+        <div
+          className="absolute -top-44 left-1/2 -translate-x-1/2 w-[760px] h-[520px] rounded-full blur-3xl"
+          aria-hidden="true"
+          style={{ background: "radial-gradient(circle, rgba(102,51,204,0.42), transparent 62%)" }}
+        />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="bg-[#6633cc]/20 text-purple-300 border-purple-400/30 mb-6">
+            <Badge className="bg-purple-500/15 text-purple-200 border-purple-400/40 mb-6">
               Managed Security Services — UAE · Egypt · KSA
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6 tracking-tight">
               Smarter Security. Stronger Defense.
             </h1>
             <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
@@ -148,31 +154,40 @@ export default function HomePage() {
             <ul className="flex flex-col md:flex-row justify-center gap-4 md:gap-8 mb-10 text-slate-300">
               {["24/7 SOC, MDR, and Exposure Management", "Subscription-based, compliance-aware", "Built for scale and automation"].map((item) => (
                 <li key={item} className="flex items-center justify-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#6633cc] flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-purple-400 flex-shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-[#6633cc] hover:bg-[#5522bb] text-white px-8">
+                <Button size="lg" className="px-8">
                   <Calendar className="h-5 w-5 mr-2" />
                   Request a Security Assessment
                 </Button>
               </a>
               <Link href="/services">
-                <Button size="lg" variant="outline" className="border-white/50 text-white bg-white/20 hover:bg-white/30 px-8">
+                <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/5 hover:bg-white/10 hover:text-white px-8">
                   View Services
                   <ChevronRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
+            </div>
+            {/* Live status strip */}
+            <div className="inline-flex items-center gap-5 mt-14 px-6 py-3.5 rounded-full border border-white/10 bg-white/[0.04]">
+              <span className="flex items-center gap-2 font-mono text-[13px] text-slate-200">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
+                SOC online
+              </span>
+              <span className="w-px h-4 bg-white/15" />
+              <span className="font-mono text-[13px] text-slate-400">UAE · Egypt · KSA coverage</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Trust bar */}
-      <section className="bg-slate-100 py-6 border-b border-slate-200">
+      <section className="bg-[#f6f4fa] py-6 border-b border-[#e9e6f0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
             {[
@@ -181,7 +196,7 @@ export default function HomePage() {
               { icon: Building2, label: "SME & Mid-Market Focused MSSP" },
             ].map((item) => (
               <div key={item.label} className="flex items-center gap-2">
-                <item.icon className="h-5 w-5 text-[#6633cc]" />
+                <item.icon className="h-5 w-5 text-purple-600" />
                 <span className="text-slate-700 font-medium">{item.label}</span>
               </div>
             ))}
@@ -190,28 +205,28 @@ export default function HomePage() {
       </section>
 
       {/* Calculate Yourself */}
-      <section className="relative bg-gradient-to-br from-black via-[#0a0418] to-[#000033] py-20 overflow-hidden">
+      <section className="relative bg-[#0b0a12] py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-20" aria-hidden="true">
-          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#6633cc] rounded-full blur-3xl" />
-          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#7c3aed] rounded-full blur-3xl" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-purple-600 rounded-full blur-3xl" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-400 rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 max-w-3xl mx-auto">
-            <Badge className="bg-[#6633cc]/20 text-purple-300 border-purple-400/30 mb-4">
+            <Badge className="bg-purple-500/15 text-purple-200 border-purple-400/40 mb-4">
               Self-Service Estimators
             </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Calculate Yourself</h2>
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight">Calculate Yourself</h2>
             <p className="text-lg md:text-xl text-slate-300 leading-relaxed">
               Don't like to wait for budgetary estimates? Use our calculators to estimate the costs for your required services and deliverables. Fully anonymous, no sales follow-ups if not requested.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             <Link href="/services/purple-x/purplevapt/calculator" className="group">
-              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-[#6633cc]/60 backdrop-blur-sm p-8 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#6633cc]/20">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#6633cc] to-[#7c3aed] flex items-center justify-center mb-6">
-                  <Calculator className="h-7 w-7 text-white" />
+              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-purple-500/60 backdrop-blur-sm p-8 transition-all hover:-translate-y-1 hover:shadow-2xl">
+                <div className="w-14 h-14 rounded-xl bg-purple-500/15 border border-purple-400/30 flex items-center justify-center mb-6">
+                  <Calculator className="h-7 w-7 text-purple-300" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">PurpleVAPT Calculator</h3>
+                <h3 className="text-2xl font-display font-bold text-white mb-3">PurpleVAPT Calculator</h3>
                 <p className="text-slate-300 mb-6 leading-relaxed">
                   Scope your vulnerability assessment and penetration testing engagement. Price IPs, web apps, AD, and compliance testing in minutes.
                 </p>
@@ -222,11 +237,11 @@ export default function HomePage() {
               </div>
             </Link>
             <Link href="/services/purple-x/purpleSOC/questionnaire" className="group">
-              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-[#7c3aed]/60 backdrop-blur-sm p-8 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c3aed]/20">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#6633cc] flex items-center justify-center mb-6">
-                  <Calculator className="h-7 w-7 text-white" />
+              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-purple-500/60 backdrop-blur-sm p-8 transition-all hover:-translate-y-1 hover:shadow-2xl">
+                <div className="w-14 h-14 rounded-xl bg-purple-500/15 border border-purple-400/30 flex items-center justify-center mb-6">
+                  <Calculator className="h-7 w-7 text-purple-300" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Size my SOC</h3>
+                <h3 className="text-2xl font-display font-bold text-white mb-3">Size my SOC</h3>
                 <p className="text-slate-300 mb-6 leading-relaxed">
                   Walk through our PurpleSOC discovery questionnaire to size your environment, estimate EPS &amp; LDS, and get an indicative annual quote.
                 </p>
@@ -351,7 +366,7 @@ export default function HomePage() {
               <Link key={useCase.name} href={useCase.href}>
                 <Card className="h-full hover:shadow-lg hover:border-[#6633cc]/30 transition-all cursor-pointer group text-center">
                   <CardContent className="p-6">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-[#ff6633] to-orange-400 flex items-center justify-center mx-auto mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-purple-600 to-purple-400 flex items-center justify-center mx-auto mb-4">
                       <useCase.icon className="h-7 w-7 text-white" />
                     </div>
                     <h3 className="font-semibold text-slate-900 group-hover:text-[#6633cc] transition-colors text-sm">{useCase.name}</h3>
@@ -362,7 +377,7 @@ export default function HomePage() {
           </div>
           <div className="text-center">
             <Link href="/solutions">
-              <Button variant="outline" className="border-[#ff6633] text-[#ff6633] hover:bg-[#ff6633] hover:text-white">
+              <Button variant="outline" className="border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white">
                 View All Solutions <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -468,25 +483,35 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-[#000033] via-[#6633cc] to-[#000033]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Know your risk. Control your exposure.</h2>
-          <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Get a comprehensive security assessment from our experts and discover how PurpleGuard can protect your business.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-white text-[#6633cc] hover:bg-slate-100 px-8">
-                <Calendar className="h-5 w-5 mr-2" />
-                Book a Free Security Consultation
-              </Button>
-            </a>
-            <a href="mailto:hello@purpleguard.io">
-              <Button size="lg" variant="outline" className="border-white/50 text-white bg-white/20 hover:bg-white/30 px-8">
-                <Mail className="h-5 w-5 mr-2" />
-                Contact Sales
-              </Button>
-            </a>
+      <section className="py-20 bg-[#f6f4fa]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-[28px] bg-purple-600 px-8 py-16 sm:px-14 text-center shadow-glow-brand">
+            <div
+              className="absolute inset-0"
+              aria-hidden="true"
+              style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.14), transparent 40%)" }}
+            />
+            <div className="relative">
+              <Image src="/mark-white.png" alt="" width={44} height={44} className="mx-auto mb-6 h-11 w-auto" />
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">Know your risk. Control your exposure.</h2>
+              <p className="text-xl text-white/85 mb-10 max-w-2xl mx-auto">
+                Get a comprehensive security assessment from our experts and discover how PurpleGuard can protect your business.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" className="bg-white text-purple-700 shadow-none hover:bg-slate-100 px-8">
+                    <Calendar className="h-5 w-5 mr-2" />
+                    Book a Free Security Consultation
+                  </Button>
+                </a>
+                <a href="mailto:hello@purpleguard.io">
+                  <Button size="lg" variant="outline" className="border-white/50 text-white bg-white/10 hover:bg-white/20 hover:text-white px-8">
+                    <Mail className="h-5 w-5 mr-2" />
+                    Contact Sales
+                  </Button>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>

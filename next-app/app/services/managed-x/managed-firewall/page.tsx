@@ -76,7 +76,7 @@ export default function ManagedFirewallPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calendar className="h-5 w-5 mr-2" /> Get Firewall Quote
                 </Button>
               </a>
@@ -211,7 +211,7 @@ export default function ManagedFirewallPage() {
           <p className="text-xl text-slate-300 mb-8">Let certified engineers handle your firewall operations while you focus on your business.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+              <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                 <Calendar className="h-5 w-5 mr-2" /> Get Started
               </Button>
             </a>

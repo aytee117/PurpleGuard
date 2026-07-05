@@ -50,11 +50,11 @@ export default function PurpleXPage() {
     <div className="min-h-screen bg-slate-50">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-[#000033] via-[#6633cc] to-[#000033] overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#0b0a12] via-[#6633cc] to-[#0b0a12] overflow-hidden">
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="bg-[#ff6633]/20 text-[#ff6633] border-[#ff6633]/30 mb-6">Always-On Protection</Badge>
+            <Badge className="bg-purple-500/20 text-purple-200 border-purple-400/40 mb-6">Always-On Protection</Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Purple X – Cybersecurity & Exposure Management
             </h1>
@@ -64,7 +64,7 @@ export default function PurpleXPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-[#ff6633] hover:bg-[#ff6633]/90 text-white">
+                <Button size="lg" className="bg-[#6633cc] hover:bg-[#6633cc]/90 text-white">
                   <Calendar className="h-5 w-5 mr-2" /> Book Security Assessment
                 </Button>
               </a>
@@ -82,7 +82,7 @@ export default function PurpleXPage() {
                 "Support regulatory compliance (ISO 27001, NIST, SOC 2)",
               ].map((obj) => (
                 <div key={obj} className="flex items-start gap-2 bg-white/5 rounded-lg p-4">
-                  <CheckCircle className="h-5 w-5 text-[#ff6633] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-purple-300 flex-shrink-0 mt-0.5" />
                   <span className="text-white text-sm">{obj}</span>
                 </div>
               ))}
@@ -197,14 +197,14 @@ export default function PurpleXPage() {
                         <Card className="border-[#6633cc]/20 bg-[#6633cc]/5">
                           <CardHeader className="pb-3">
                             <CardTitle className="text-lg flex items-center gap-2">
-                              <Target className="h-5 w-5 text-[#ff6633]" /> Business Value
+                              <Target className="h-5 w-5 text-[#6633cc]" /> Business Value
                             </CardTitle>
                           </CardHeader>
                           <CardContent>
                             <ul className="space-y-2">
                               {service.value.map((val) => (
                                 <li key={val} className="flex items-start gap-2">
-                                  <CheckCircle className="h-4 w-4 text-[#ff6633] flex-shrink-0 mt-1" />
+                                  <CheckCircle className="h-4 w-4 text-[#6633cc] flex-shrink-0 mt-1" />
                                   <span className="text-slate-700 text-sm font-medium">{val}</span>
                                 </li>
                               ))}
@@ -222,7 +222,7 @@ export default function PurpleXPage() {
       </section>
 
       {/* Why Purple X */}
-      <section className="py-20 bg-gradient-to-br from-[#000033] to-[#6633cc]">
+      <section className="py-20 bg-gradient-to-br from-[#0b0a12] to-[#6633cc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why Choose Purple X?</h2>

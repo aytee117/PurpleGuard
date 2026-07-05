@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const color = searchParams.get("color") ?? "purple";
 
   const gradients: Record<string, [string, string]> = {
-    purple: ["#3b0764", "#6d28d9"],
+    purple: ["#221345", "#6633cc"],
     blue: ["#0c1a4d", "#1d4ed8"],
     emerald: ["#052e16", "#065f46"],
     red: ["#450a0a", "#b91c1c"],
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     cyan: ["#0c1a4d", "#0e7490"],
     slate: ["#0f172a", "#334155"],
     indigo: ["#1e1b4b", "#4338ca"],
-    default: ["#000033", "#6633cc"],
+    default: ["#0b0a12", "#6633cc"],
   };
 
   const [gradStart, gradEnd] = gradients[color] ?? gradients.default;
@@ -127,7 +127,7 @@ export async function GET(req: NextRequest) {
                   gap: 6,
                 }}
               >
-                <span style={{ color: "#ff6633", fontSize: 10 }}>●</span>
+                <span style={{ color: "#6633cc", fontSize: 10 }}>●</span>
                 {item}
               </div>
             ))}
