@@ -111,7 +111,7 @@ export default function Footer() {
                 { label: "Resources", href: "/blog" },
                 { label: "Contact", href: "/booking" },
                 { label: "PurpleVAPT Calculator", href: "/services/purple-x/purplevapt/calculator" },
-                { label: "SOC Sizing Tool", href: "/services/purple-x/purpleSOC/questionnaire" },
+                { label: "SOC Sizing Tool", href: "/services/purple-x/purplesoc/questionnaire" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className="text-slate-400 hover:text-white transition-colors">

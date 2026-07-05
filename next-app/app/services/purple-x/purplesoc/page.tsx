@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     },
   };
 
-const QUESTIONNAIRE_LINK = "/services/purple-x/purpleSOC/questionnaire";
+const QUESTIONNAIRE_LINK = "/services/purple-x/purplesoc/questionnaire";
 
 const socFaqs = [
   { question: "What is a managed SOC and how does PurpleSOC work?", answer: "A managed SOC (Security Operations Centre) monitors your environment 24/7 for threats, analyses alerts, and responds to incidents on your behalf. PurpleSOC ingests logs and signals from across your infrastructure into a cloud-native SIEM, applies threat intelligence, and provides human-led triage and response — without you needing to build an in-house team." },
