@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { CALENDLY_LINK } from "@/lib/services-data";
 import {
   Menu,
   ChevronDown,
@@ -243,7 +244,7 @@ export default function Navigation() {
 
           {/* CTA + Mobile toggle */}
           <div className="flex items-center space-x-4">
-            <Link href="/booking" className="hidden md:block">
+            <Link href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="hidden md:block">
               <Button>Book Discovery Call</Button>
             </Link>
 
@@ -301,7 +302,7 @@ export default function Navigation() {
 
                   <div className="border-b border-slate-200 my-2" />
 
-                  <Link href="/booking" onClick={() => setMobileOpen(false)}>
+                  <Link href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
                     <Button className="w-full">Book Discovery Call</Button>
                   </Link>
                 </div>
