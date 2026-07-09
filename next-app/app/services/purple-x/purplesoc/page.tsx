@@ -89,6 +89,7 @@ export default function PurpleSOCPage() {
               </Link>
               <GatedDownloadCTA
                 documentSlug="purplesoc-datasheet"
+                documentDisplayName="PurpleSOC Datasheet"
                 buttonLabel="Download Datasheet"
                 buttonClassName="border-white bg-white/20 text-white hover:bg-white/30"
               />
