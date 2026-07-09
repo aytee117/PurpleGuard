@@ -3,12 +3,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Download, CheckCircle2 } from "lucide-react";
 
 interface GatedDownloadCTAProps {
   documentSlug: string;
+  documentDisplayName?: string;
   buttonLabel?: string;
-  className?: string;
   buttonClassName?: string;
 }
 
@@ -16,8 +23,8 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export function GatedDownloadCTA({
   documentSlug,
+  documentDisplayName = "datasheet",
   buttonLabel = "Download Datasheet",
-  className,
   buttonClassName,
 }: GatedDownloadCTAProps) {
   const [open, setOpen] = useState(false);
@@ -52,52 +59,74 @@ export function GatedDownloadCTA({
     }
   }
 
-  if (!open) {
-    return (
-      <Button size="lg" variant="outline" className={buttonClassName} onClick={() => setOpen(true)}>
-        <Download className="h-5 w-5 mr-2" /> {buttonLabel}
-      </Button>
-    );
-  }
-
-  if (status === "success") {
-    return (
-      <div className={className}>
-        <p className="flex items-center gap-2 text-sm font-medium text-emerald-700">
-          <CheckCircle2 className="h-5 w-5" />
-          Check your inbox — we&apos;ve sent the download link to {email}.
-        </p>
-      </div>
-    );
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen);
+    if (!nextOpen) {
+      // Reset so reopening later doesn't show a stale success/error state
+      setStatus("idle");
+      setErrorMessage("");
+      setEmail("");
+      setCompany("");
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className={className}>
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Honeypot field - hidden from real users, bots tend to fill every field */}
-        <input
-          type="text"
-          name="company"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          className="hidden"
-          tabIndex={-1}
-          autoComplete="off"
-          aria-hidden="true"
-        />
-        <Input
-          type="email"
-          required
-          placeholder="you@company.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="sm:max-w-xs bg-white text-slate-900"
-        />
-        <Button type="submit" size="lg" disabled={status === "loading"}>
-          {status === "loading" ? "Sending..." : "Send me the datasheet"}
-        </Button>
-      </div>
-      {status === "error" && <p className="mt-2 text-sm text-red-400">{errorMessage}</p>}
-    </form>
+    <>
+      <Button size="lg" variant="outline" className={buttonClassName} onClick={() => setOpen(true)}>
+        <Download className="h-5 w-5 mr-2" /> {buttonLabel}
+      </Button>
+
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent>
+          {status === "success" ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                  Check your inbox
+                </DialogTitle>
+                <DialogDescription>
+                  We&apos;ve sent the download link for the {documentDisplayName} to {email}.
+                </DialogDescription>
+              </DialogHeader>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle>Get the {documentDisplayName}</DialogTitle>
+                <DialogDescription>
+                  Enter your email and we&apos;ll send you a link to download it.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                {/* Honeypot field - hidden from real users, bots tend to fill every field */}
+                <input
+                  type="text"
+                  name="company"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
+                <Input
+                  type="email"
+                  required
+                  autoFocus
+                  placeholder="you@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Button type="submit" size="lg" disabled={status === "loading"}>
+                  {status === "loading" ? "Sending..." : "Send me the datasheet"}
+                </Button>
+                {status === "error" && <p className="text-sm text-red-500">{errorMessage}</p>}
+              </form>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
