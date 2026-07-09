@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, ChevronRight, Calendar, ArrowLeft, Shield, Target, Bell, Activity, FileText, CheckCircle, Clock, Zap, TrendingUp } from "lucide-react";
 import { serviceJsonLd, faqJsonLd, breadcrumbJsonLd, ogImageUrl } from "@/lib/json-ld";
+import { GatedDownloadCTA } from "@/components/GatedDownloadCTA";
 
 const OG = ogImageUrl({ title: "24/7 Managed SOC — UAE & Egypt", subtitle: "PurpleSOC: Always-On Threat Monitoring & Incident Response", category: "Purple X", color: "blue" });
 
@@ -86,6 +87,11 @@ export default function PurpleSOCPage() {
                   View Purple-X Services <ChevronRight className="h-5 w-5 ml-2" />
                 </Button>
               </Link>
+              <GatedDownloadCTA
+                documentSlug="purplesoc-datasheet"
+                buttonLabel="Download Datasheet"
+                buttonClassName="border-white bg-white/20 text-white hover:bg-white/30"
+              />
             </div>
           </div>
         </div>

@@ -7,4 +7,9 @@ vite.config.ts.*
 next-app/.next
 .next
 next-app/npm-cache/
+npm-cache/
+.playwright-mcp/
 CLAUDE.md
+.env
+.env.local
+.env*.local
