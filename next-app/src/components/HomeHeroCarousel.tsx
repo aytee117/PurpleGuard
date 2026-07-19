@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Noto_Sans_Egyptian_Hieroglyphs } from "next/font/google";
-import { Calendar, ChevronRight, FileText, Mail } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, FileText, Mail } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ReportHeroReticle } from "@/components/reports/ReportHeroReticle";
@@ -31,15 +31,24 @@ const TRANSITION_MS = 500;
 export function HomeHeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Once the visitor manually navigates (dot, arrow, drag), autoplay stops for good —
+  // otherwise the timer yanks them back to slide 1 seconds after they picked a slide.
+  // `paused` (hover-only) can't cover this on touch devices, where there's no hover state.
+  const [autoplayStopped, setAutoplayStopped] = useState(false);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || autoplayStopped) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => {
       setCurrent((c) => (c + 1) % SLIDE_COUNT);
     }, AUTOPLAY_DELAY_MS);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, autoplayStopped]);
+
+  function goTo(i: number) {
+    setCurrent(i);
+    setAutoplayStopped(true);
+  }
 
   return (
     <section
@@ -154,6 +163,26 @@ export function HomeHeroCarousel() {
         </div>
       </div>
 
+      {/* prev/next arrows — solid brand-dark backdrop, not just translucent, since at
+          mobile widths these sit at the vertical center of text-heavy slide content and
+          need to cleanly cover whatever they overlap rather than let it bleed through */}
+      <button
+        type="button"
+        aria-label="Previous slide"
+        onClick={() => goTo((current - 1 + SLIDE_COUNT) % SLIDE_COUNT)}
+        className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#0b0a12]/80 text-white/80 shadow-lg backdrop-blur-md transition-colors hover:bg-[#0b0a12] hover:text-white sm:left-4"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        type="button"
+        aria-label="Next slide"
+        onClick={() => goTo((current + 1) % SLIDE_COUNT)}
+        className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#0b0a12]/80 text-white/80 shadow-lg backdrop-blur-md transition-colors hover:bg-[#0b0a12] hover:text-white sm:right-4"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
       {/* slide indicators */}
       <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center gap-2">
         {Array.from({ length: SLIDE_COUNT }, (_, i) => (
@@ -162,7 +191,7 @@ export function HomeHeroCarousel() {
             type="button"
             aria-label={`Go to slide ${i + 1}`}
             aria-current={current === i}
-            onClick={() => setCurrent(i)}
+            onClick={() => goTo(i)}
             className={`h-2 rounded-full transition-all ${current === i ? "w-6 bg-white" : "w-2 bg-white/30 hover:bg-white/50"}`}
           />
         ))}
