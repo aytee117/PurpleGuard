@@ -1,0 +1,67 @@
+@keyframes pgSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes pgBlip {
+  0% { opacity: 0; transform: scale(0.4); }
+  8% { opacity: 1; transform: scale(1); }
+  60% { opacity: 0.55; }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+@keyframes pgDriftUp {
+  from { transform: translateY(18px); }
+  to { transform: translateY(-26px); }
+}
+@keyframes pgGlyphFade {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.26; }
+}
+@keyframes pgScanline {
+  0% { top: -4%; opacity: 0; }
+  6% { opacity: 0.5; }
+  50% { opacity: 0.5; }
+  94% { opacity: 0; }
+  100% { top: 104%; opacity: 0; }
+}
+@keyframes pgRingBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.02); opacity: 1; }
+}
+@keyframes pgGlowDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 18px) scale(1.08); }
+}
+@keyframes pgTickerX {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.glow { animation: pgGlowDrift 14s ease-in-out infinite; }
+.glyphRow1 { animation: pgDriftUp 26s ease-in-out infinite alternate; }
+.glyphLine1 { animation: pgGlyphFade 11s ease-in-out infinite; }
+.glyphLine2 { animation: pgGlyphFade 13s ease-in-out infinite; animation-delay: -4s; }
+.glyphLine3 { animation: pgGlyphFade 9s ease-in-out infinite; animation-delay: -7s; }
+.spin { animation: pgSpin 8s linear infinite; }
+.ringBreathe { animation: pgRingBreathe 9s ease-in-out infinite; }
+.scanline { animation: pgScanline 12s linear infinite; }
+.tickerTrack { animation: pgTickerX 38s linear infinite; }
+.blip {
+  animation: pgBlip 8s ease-out infinite;
+  animation-delay: var(--blip-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow,
+  .glyphRow1,
+  .glyphLine1,
+  .glyphLine2,
+  .glyphLine3,
+  .spin,
+  .ringBreathe,
+  .scanline,
+  .tickerTrack,
+  .blip {
+    animation-duration: 0.01s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

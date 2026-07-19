@@ -179,5 +179,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.6,
     },
+
+    {
+      url: `${BASE}/reports/egypt-threat-intel-h1-2026`,
+      lastModified: NOW,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 }

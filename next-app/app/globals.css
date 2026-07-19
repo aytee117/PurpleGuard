@@ -30,6 +30,13 @@
   --chart-4: #1f9d6b;
   --chart-5: #3e7bfa;
 
+  /* Threat-severity scale (security domain) — same in light/dark, per the PurpleGuard design system's --pg-threat-* tokens */
+  --threat-critical: #e0484d;
+  --threat-high: #f2762e;
+  --threat-medium: #d99423;
+  --threat-low: #3e7bfa;
+  --threat-safe: #1f9d6b;
+
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-jetbrains), ui-monospace, monospace;
@@ -72,6 +79,10 @@
        without a little extra room. */
     line-height: 1.1 !important;
   }
+}
+
+[dir="rtl"] {
+  font-family: var(--font-plex-arabic), var(--font-sans);
 }
 
 @layer utilities {

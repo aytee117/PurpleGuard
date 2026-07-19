@@ -7,10 +7,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Shield, ChevronRight, Calendar, Mail, Target, Eye, Zap, Lock, Server,
   Globe, Building2, Stethoscope, Landmark, Code, Briefcase, Factory,
-  CheckCircle, ShieldCheck, Cpu, FileCheck, Handshake, AlertTriangle,
+  ShieldCheck, Cpu, FileCheck, Handshake, AlertTriangle,
   Cloud, Radar, KeyRound, MapPin, Calculator
 } from "lucide-react";
 import { faqJsonLd, ogImageUrl, websiteJsonLd } from "@/lib/json-ld";
+import { HomeHeroCarousel } from "@/components/HomeHeroCarousel";
 
 const OG = ogImageUrl({
   title: "Managed Security Services UAE & Egypt",
@@ -123,68 +124,7 @@ export default function HomePage() {
       />
 
       {/* Hero */}
-      <section className="relative bg-[#0b0a12] overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-100"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-            maskImage: "radial-gradient(ellipse 80% 70% at 50% 0%, #000 40%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 0%, #000 40%, transparent 100%)",
-          }}
-        />
-        <div
-          className="absolute -top-44 left-1/2 -translate-x-1/2 w-[760px] h-[520px] rounded-full blur-3xl"
-          aria-hidden="true"
-          style={{ background: "radial-gradient(circle, rgba(102,51,204,0.42), transparent 62%)" }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge className="bg-purple-500/15 text-purple-200 border-purple-400/40 mb-6">
-              Managed Security Services — UAE · Egypt · KSA
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-              Smarter Security. Stronger Defense.
-            </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
-              Next-generation managed cybersecurity and exposure management for SMEs and mid-market organizations in the UAE, Egypt, and Saudi Arabia.
-            </p>
-            <ul className="flex flex-col md:flex-row justify-center gap-4 md:gap-8 mb-10 text-slate-300">
-              {["24/7 SOC, MDR, and Exposure Management", "Subscription-based, compliance-aware", "Built for scale and automation"].map((item) => (
-                <li key={item} className="flex items-center justify-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-purple-400 flex-shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="px-8">
-                  <Calendar className="h-5 w-5 mr-2" />
-                  Request a Security Assessment
-                </Button>
-              </a>
-              <Link href="/services">
-                <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/5 hover:bg-white/10 hover:text-white px-8">
-                  View Services
-                  <ChevronRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
-            </div>
-            {/* Live status strip */}
-            <div className="inline-flex items-center gap-5 mt-14 px-6 py-3.5 rounded-full border border-white/10 bg-white/[0.04]">
-              <span className="flex items-center gap-2 font-mono text-[13px] text-slate-200">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-                SOC online
-              </span>
-              <span className="w-px h-4 bg-white/15" />
-              <span className="font-mono text-[13px] text-slate-400">UAE · Egypt · KSA coverage</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHeroCarousel />
 
       {/* Trust bar */}
       <section className="bg-[#f6f4fa] py-6 border-b border-[#e9e6f0]">
