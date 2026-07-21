@@ -10,6 +10,7 @@ next-app/npm-cache/
 npm-cache/
 .playwright-mcp/
 CLAUDE.md
+project deliverables.md
 .env
 .env.local
 .env*.local
