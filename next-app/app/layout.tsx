@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { IBM_Plex_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
-
-const GTM_ID = "GTM-TBJDVSX4";
 
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -28,6 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Analytics from "@/components/Analytics";
+import CookieConsent from "@/components/CookieConsent";
+import { Toaster } from "@/components/ui/toaster";
 import { organizationJsonLd, localBusinessJsonLd, websiteJsonLd } from "@/lib/json-ld";
 
 const OG_IMAGE = "/api/og?title=PurpleGuard%20MSSP&subtitle=Managed%20Security%20Services%20%E2%80%94%20UAE%2C%20Egypt%20%26%20KSA&category=MSSP&color=purple";
@@ -82,25 +82,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plexSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body>
-        <Script id="gtm-bootstrap" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','${GTM_ID}');`}
-        </Script>
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        <Analytics />
         <Navigation />
         {children}
         <Footer />
         <WhatsAppButton />
+        <CookieConsent />
+        <Toaster />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(org) }}
