@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin, ChevronDown, ShieldCheck } from "lucide-react";
+import CookiePreferences from "@/components/CookiePreferences";
 
 const EMAIL = "hello@purpleguard.io";
 const PHONE_DISPLAY = "+971 58 515 9666";
@@ -389,9 +390,18 @@ export default function PrivacyContent() {
                 Google Analytics cookies that help us understand site usage in aggregate.
               </p>
 
+              <h3>Your Choice</h3>
+              <p>
+                On your first visit, a cookie consent banner asks whether you accept
+                analytics cookies. If you reject, Google Analytics is loaded in a
+                consent-denied state and no analytics or advertising cookies are stored.
+                Your choice is remembered in your browser's local storage. You can
+                update your choice at any time using the controls below.
+              </p>
+              <CookiePreferences />
               <div className="callout">
-                A cookie consent banner is being implemented. In the meantime, you can
-                block or delete cookies through your browser settings.
+                You can also block or delete cookies at any time through your browser
+                settings.
               </div>
             </section>
 
