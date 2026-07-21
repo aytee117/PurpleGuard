@@ -60,7 +60,7 @@ Status legend: `Open` — not started · `In progress` · `Diagnosed` — root c
 
 ## 3. Egypt Threat Intel Report — landing page, hero animation, gated download
 
-**Status:** In progress — real report content has now landed (see "Design refresh" below); form still temporarily runs a Supabase-backed waitlist instead of the instant-download flow (see subsection below) while the report PDF itself is still pending.
+**Status:** Live in production on `main`. The landing page, homepage hero carousel, and Phase 1 SEO fixes are merged and deployed; the waitlist form is fully live (Turnstile + Supabase env vars confirmed in Vercel Production/Preview). Still blocked on real report content (PDF files, contact email) before the waitlist can be swapped back to the real instant-download flow — see the checklist below.
 
 **Summary:** New lead-magnet landing page (`/reports/egypt-threat-intel-h1-2026`) for the SOC team's first bilingual (EN/AR) threat intelligence report, gated behind the existing email-capture infrastructure (see [CLAUDE.md](CLAUDE.md) "Document Download Infrastructure"). Ported from two claude.ai/design projects: the landing page itself and a hero background animation (reticle-sweep variant with the brand mark at its core).
 
@@ -89,7 +89,7 @@ The user updated the design in `claude.ai/design` with real report data and impo
 - [ ] **Contact email** — confirm `intel@purpleguard.io` is a real, monitored inbox, or keep the current default `hello@purpleguard.io`.
 - [ ] **Report PDF(s)** — English and Arabic files. Filenames are already wired up (`documentFilename.en` / `.ar` in the data file); once the real PDFs exist, place them in `next-app/private-documents/` under those exact names (case-sensitive on Vercel's Linux runtime, even though Windows dev won't catch a mismatch — see the "Updating a document" gotcha in CLAUDE.md).
 - [x] Stats, regional ranking, victims breakdown, threat-actor profiles, and confirmed victim list — real data landed via the design refresh above.
-- [x] Turnstile keys — set in `next-app/.env.local` for local dev (site key confirmed working against the deployed widget's allowed hostnames — a "connect" error on `localhost` alone is expected and not a bug). Still need to be added to Vercel's Production/Preview env vars before this can go live (see CLAUDE.md's env-var-per-deployment gotcha).
+- [x] Turnstile keys — set in `next-app/.env.local` for local dev, and now also added to Vercel Production + Preview env vars. Confirmed working on a live preview deployment (the earlier Cloudflare "unable to connect" error there turned out to be the same allowed-hostnames gap as the `localhost` case, not a Vercel-side issue).
 
 **Content data format:** `next-app/src/lib/reports/egypt-threat-intel-h1-2026.ts` is a typed, fill-in-the-blanks module separating real report data (stats, threat actors, document filenames, contact email — the stuff above) from the fixed editorial copy that stays in `EgyptReportLanding.tsx` (headlines, section intros, disclaimer text, which don't need SOC/marketing sign-off to change). `gated-documents.ts` and `ReportRequestForm.tsx` both import from it, so editing the one file propagates everywhere it's used. This is a new pattern (one data file per report edition, under `src/lib/reports/`) — a template to reuse for the next bi-annual edition, distinct from the existing `services-data.ts` pattern which centralizes all *service* pages in a single file rather than one per item.
 
@@ -115,10 +115,12 @@ Since the real PDF/content are still weeks out, the landing page now collects in
 
 Once the report ships: signups get manually exported from Supabase's table editor and imported into the team's existing Mailchimp account (tagged), and the final "report is ready" email is sent manually from Mailchimp — no code-driven batch-send was built, by design (one-time event, not worth the automation). Revert runbook: point `ReportRequestForm.tsx`'s fetch back at `/api/download-request` (restore `documentSlug` in the payload and the original success copy), delete `app/api/report-interest/route.ts` and `src/lib/supabase.ts`, remove the `@supabase/supabase-js` dependency and the Supabase env vars. `src/lib/turnstile.ts` stays permanently either way — the real route depends on it too.
 
+**NOTE: Before the first Mailchimp export/import, set the imported contacts' subscription status to "Pending" (not "Subscribed").** Turnstile + the honeypot already filter bot spam, but nothing here verifies the human actually owns the email address they typed. Mailchimp's own double opt-in — triggered automatically for contacts imported as "Pending," which then get Mailchimp's standard confirmation email — covers that for free at the one point these emails ever leave Supabase, with no code to build or maintain. Remind Claude to check this when the export actually happens.
+
 **Manual setup — done:**
 - [x] Supabase project created (`PurpleGuard ETW`), `report_signups` table created with schema `report_slug`, `email`, `job_title`, `report_lang`, `consent`, `created_at`, unique on `(report_slug, email)`. RLS enabled with zero policies (defense-in-depth); `service_role` needed an explicit `grant select, insert, update on public.report_signups to service_role;` — enabling Supabase's "Automatically expose new tables" toggle does **not** cover `service_role`, only `anon`/`authenticated` (learned the hard way via a live `permission denied` error).
 - [x] `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` (service-role key, not `anon`) added to `next-app/.env.local`.
-- [ ] Same two vars still need to be added to Vercel Project Settings (Production + Preview), then redeploy — same per-deployment env var snapshot gotcha as the Turnstile keys above. **This is the only step left before the waitlist can go live for real visitors.**
+- [x] Same two vars added to Vercel Project Settings (Production + Preview) and redeployed — the waitlist is live for real visitors.
 
 **Verified:** `npm run build`/`tsc --noEmit` pass clean. Full happy-path exercised end-to-end in dev via Playwright with Cloudflare's always-pass Turnstile test keypair (swapped into `.env.local` temporarily, then reverted back to the real keys): form submits in both EN and AR, hits `/api/report-interest`, a row lands correctly in Supabase's Table Editor with the right `email`/`job_title`/`report_lang`/`consent`, and the "You're on the waitlist" success copy renders. Resubmitting the same email confirmed the upsert overwrites in place (row count stays 1). Confirmed `download-request/route.ts`'s honeypot/Turnstile responses are unchanged post-refactor via direct curl checks.
 
@@ -129,9 +131,21 @@ Once the report ships: signups get manually exported from Supabase's table edito
 - `next-app/src/components/reports/ReportRequestForm.tsx` (temp diff — fetch target + success copy)
 - `next-app/app/api/download-request/route.ts` (refactor only — now imports `verifyTurnstileToken`, behavior unchanged)
 
+### Homepage hero carousel — autoplay/navigation fix (post-Phase-1)
+
+**Status:** Done, merged to `main` via branch `fix/hero-carousel-navigation`.
+
+**Bug:** The dot indicators only called `setCurrent`, never touching the autoplay timer, and the autoplay-pause logic was hover-only (`onMouseEnter`/`onMouseLeave`) — which does nothing on touch devices. Net effect: navigating to slide 2 (by dot or, on mobile, by tap) got silently reverted back to slide 1 a few seconds later by the still-running timer.
+
+**Fix:** Added an `autoplayStopped` state that any manual interaction (a dot **or** a new prev/next arrow) sets permanently — autoplay only ever runs until the visitor's first manual navigation. Also added small (36px) left/right arrow buttons pinned to the slide edges, vertically centered. Given a solid brand-dark background (`bg-[#0b0a12]/80`) rather than a translucent one: at mobile widths these buttons sit at the vertical center of text-heavy slide content, and a solid backdrop cleanly covers whatever they overlap instead of letting the underlying text bleed through half-legibly.
+
+**Verified:** `tsc --noEmit`/`npm run build` clean. Confirmed via Playwright that after a manual navigation, the slide holds through multiple autoplay intervals (~8s, nearly 3 cycles) without reverting.
+
+**Files involved:** `next-app/src/components/HomeHeroCarousel.tsx`.
+
 ### Landing page optimization deliverables
 
-**Status:** Phase 1 done (discoverability fixes), verified in dev — not yet merged. Phases 2–4 still open.
+**Status:** Phase 1 done, merged and live in production. Phases 2–4 still open.
 
 **Phase 1 — implemented and verified:**
 - [x] **Sitemap** — added `/reports/egypt-threat-intel-h1-2026` to `next-app/app/sitemap.ts` (`priority: 0.8`, `changeFrequency: "monthly"`). Confirmed live in the generated `/sitemap.xml` output in dev.
