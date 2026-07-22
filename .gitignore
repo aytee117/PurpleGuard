@@ -11,6 +11,7 @@ npm-cache/
 .playwright-mcp/
 CLAUDE.md
 project deliverables.md
+Blog Articles/
 .env
 .env.local
 .env*.local

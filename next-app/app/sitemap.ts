@@ -1,9 +1,24 @@
 import type { MetadataRoute } from "next";
+import { getAllPosts, blogCategories } from "@/lib/blog";
 
 const BASE = "https://www.purpleguard.io";
 const NOW = new Date().toISOString();
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+    url: `${BASE}/blog/${post.slug}`,
+    lastModified: new Date(post.updatedAt ?? post.publishedAt).toISOString(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  const blogCategoryPages: MetadataRoute.Sitemap = blogCategories.map((cat) => ({
+    url: `${BASE}/blog/category/${cat.slug}`,
+    lastModified: NOW,
+    changeFrequency: "weekly",
+    priority: 0.5,
+  }));
+
   return [
     { url: BASE, lastModified: NOW, changeFrequency: "weekly", priority: 1.0 },
 
@@ -186,5 +201,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+
+    ...blogCategoryPages,
+    ...blogPosts,
   ];
 }

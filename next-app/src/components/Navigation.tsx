@@ -48,7 +48,7 @@ const solutions = [
 ];
 
 const resourcesItems = [
-  { name: "Blog", tagline: "Cybersecurity insights & news", href: "/blog", icon: BookOpen, color: "from-purple-500 to-indigo-600", badge: "Coming Soon" },
+  { name: "Blog", tagline: "Cybersecurity insights & news", href: "/blog", icon: BookOpen, color: "from-purple-500 to-indigo-600" },
   { name: "VAPT Calculator", tagline: "Estimate your penetration testing scope", href: "/services/purple-x/purplevapt/calculator", icon: Calculator, color: "from-emerald-500 to-teal-600" },
   { name: "SOC Sizing Tool", tagline: "Discover the right SOC model for you", href: "/services/purple-x/purplesoc/questionnaire", icon: ClipboardCheck, color: "from-blue-500 to-cyan-600" },
 ];
@@ -216,12 +216,7 @@ export default function Navigation() {
                             <item.icon className="h-4 w-4 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-slate-900 group-hover/item:text-[#6633cc] transition-colors text-sm">{item.name}</span>
-                              {"badge" in item && item.badge && (
-                                <span className="text-[10px] font-semibold bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full">{item.badge}</span>
-                              )}
-                            </div>
+                            <span className="font-medium text-slate-900 group-hover/item:text-[#6633cc] transition-colors text-sm">{item.name}</span>
                             <div className="text-xs text-slate-500 truncate">{item.tagline}</div>
                           </div>
                           <ChevronRight className="h-4 w-4 text-slate-300 group-hover/item:text-[#6633cc] transition-colors flex-shrink-0" />

@@ -156,6 +156,45 @@ export function faqJsonLd(faqs: { question: string; answer: string }[]) {
   };
 }
 
+export function articleJsonLd({
+  title,
+  description,
+  url,
+  datePublished,
+  dateModified,
+  authorName,
+  section,
+  image,
+}: {
+  title: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  authorName: string;
+  section?: string;
+  image?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE}${url}` },
+    url: `${BASE}${url}`,
+    datePublished,
+    dateModified: dateModified ?? datePublished,
+    author: { "@type": "Organization", name: authorName, url: BASE },
+    publisher: {
+      "@type": "Organization",
+      name: "PurpleGuard",
+      logo: { "@type": "ImageObject", url: `${BASE}/logo.png` },
+    },
+    ...(section ? { articleSection: section } : {}),
+    ...(image ? { image: [image.startsWith("http") ? image : `${BASE}${image}`] } : {}),
+  };
+}
+
 export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",

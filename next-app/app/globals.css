@@ -85,6 +85,14 @@
   font-family: var(--font-plex-arabic), var(--font-sans);
 }
 
+/* Smooth in-page anchor navigation (e.g. blog table-of-contents jumps),
+   disabled when the visitor prefers reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @layer utilities {
   .gradient-primary {
     background: linear-gradient(135deg, #6633cc 0%, #44208a 100%);
