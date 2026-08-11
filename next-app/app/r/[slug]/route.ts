@@ -23,14 +23,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
   // 404, since a typo in a sent email would otherwise dead-end a prospect.
 
   after(async () => {
-    const supabase = getSupabaseAdmin();
-    await supabase.from("link_clicks").insert({
-      campaign_slug: CAMPAIGN_SLUG,
-      slug,
-      referrer: req.headers.get("referer"),
-      user_agent: req.headers.get("user-agent"),
-      country: req.headers.get("x-vercel-ip-country"),
-    });
+    try {
+      const supabase = getSupabaseAdmin();
+      const { error } = await supabase.from("link_clicks").insert({
+        campaign_slug: CAMPAIGN_SLUG,
+        slug,
+        referrer: req.headers.get("referer"),
+        user_agent: req.headers.get("user-agent"),
+        country: req.headers.get("x-vercel-ip-country"),
+      });
+      if (error) console.error("link_clicks insert failed:", error);
+    } catch (err) {
+      console.error("link_clicks insert threw:", err);
+    }
   });
 
   return NextResponse.redirect(target, 307);
