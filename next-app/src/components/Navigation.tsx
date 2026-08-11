@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { CALENDLY_LINK } from "@/lib/services-data";
@@ -60,6 +61,10 @@ const navigationItems = [
 
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  // /webinar is a single-CTA landing page ("one exit") — no site nav.
+  if (pathname?.startsWith("/webinar")) return null;
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">

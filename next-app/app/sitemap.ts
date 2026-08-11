@@ -201,6 +201,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${BASE}/webinar`,
+      lastModified: NOW,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
 
     ...blogCategoryPages,
     ...blogPosts,

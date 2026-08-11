@@ -1,4 +1,13 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export default function WhatsAppButton() {
+  const pathname = usePathname();
+
+  // /webinar is a single-CTA landing page ("one exit") — no competing chat bubble.
+  if (pathname?.startsWith("/webinar")) return null;
+
   return (
     <a
       href="https://wa.me/971585159666"
