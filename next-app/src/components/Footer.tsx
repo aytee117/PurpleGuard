@@ -1,11 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Linkedin, Twitter, Youtube, Phone, MapPin, Mail } from "lucide-react";
 import { CALENDLY_LINK } from "@/lib/services-data";
 import CookiePreferencesLink from "./CookiePreferencesLink";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+
+  // /webinar is a single-CTA landing page ("one exit") — no site footer.
+  if (pathname?.startsWith("/webinar")) return null;
 
   return (
     <footer className="bg-[#0b0a12] text-white">
