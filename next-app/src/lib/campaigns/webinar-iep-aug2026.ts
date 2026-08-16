@@ -29,6 +29,7 @@ export const SLUGS: Record<string, ChannelConfig> = {
   nl: { source: "linkedin", medium: "newsletter" },
   mhe: { source: "linkedin", medium: "mhe-repost" },
   ev: { source: "linkedin", medium: "event-page" },
+  dm: { source: "sales", medium: "outreach" },
 };
 
 export const webinarIepAug2026 = {
