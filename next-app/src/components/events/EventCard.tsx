@@ -14,7 +14,7 @@ function formatDate(iso: string): string {
 export function EventCard({ event }: { event: EventItem }) {
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#6633cc]/30 hover:shadow-md">
-      <EventHeroImage src={event.heroImage} alt={event.title} className="aspect-video w-full" />
+      <EventHeroImage alt={event.title} className="aspect-video w-full" />
 
       <div className="flex flex-1 flex-col p-6">
         <span className="mb-4 w-fit rounded-full border border-[#6633cc]/20 bg-[#f3eefc] px-3 py-1 text-xs font-medium text-[#6633cc]">

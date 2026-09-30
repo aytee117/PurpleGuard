@@ -1,11 +1,20 @@
 // Events registry — auto-discovers published Teams webinars live from
 // Microsoft Graph (listPublishedWebinars) so a newly published event shows
 // up on /events without a code change. `manualOverrides` below is the only
-// hand-maintained part: optional cosmetic extras (takeaways, hero photo,
-// speaker fallback, a shorter dek) that Graph's webinar object doesn't
-// carry, keyed by the webinar's own Graph id — never required, an event
-// with no override entry still displays fine using Graph's own title and
-// description alone.
+// hand-maintained part: optional cosmetic extras (takeaways, speaker
+// fallback, a shorter dek) that Graph's webinar object doesn't carry, keyed
+// by the webinar's own Graph id — never required, an event with no override
+// entry still displays fine using Graph's own title and description alone.
+//
+// Deliberately no per-event hero photo: confirmed against the actual Graph
+// schema (virtualEventWebinar, virtualEventSettings,
+// virtualEventWebinarRegistrationConfiguration) that no banner/cover image
+// is exposed via the API at all, so there's no way to auto-pull the real
+// Teams registration-page image. Rather than make hero photos a recurring
+// manual per-event chore (upload a file, add an override, redeploy — for
+// every single event, forever), every event uses the brand-gradient
+// placeholder (EventHeroImage) as its real, permanent design. Revisit only
+// if Microsoft ever exposes this via the API.
 //
 // Cache/refresh note: this now depends on a live external call, fronted by
 // Next's ISR (`revalidate` on the hub/detail pages) rather than a per-request
@@ -47,14 +56,12 @@ export interface EventItem {
   descriptionHtml?: string;
   takeaways?: string[];
   speaker?: EventSpeaker;
-  heroImage?: string;
 }
 
 interface ManualOverride {
   dek?: string;
   takeaways?: string[];
   speaker?: EventSpeaker;
-  heroImage?: string;
 }
 
 // Optional, keyed by the webinar's Graph id (copy it from the discovered
@@ -63,7 +70,6 @@ interface ManualOverride {
 //
 // "88b245ac-b0b2-f1aa-e34a-c81c27abdac2@f9448ec4-804b-46af-b810-62085248da33": {
 //   takeaways: ["...", "..."],
-//   heroImage: "/events/<slug>/hero.jpg",
 // },
 const manualOverrides: Record<string, ManualOverride> = {};
 
@@ -103,7 +109,6 @@ function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
         : undefined,
     takeaways: override?.takeaways,
     speaker: override?.speaker,
-    heroImage: override?.heroImage,
   };
 }
 

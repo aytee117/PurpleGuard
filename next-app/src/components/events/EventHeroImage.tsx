@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ImageIcon } from "lucide-react";
 
 interface EventHeroImageProps {
   src?: string;
@@ -7,10 +6,12 @@ interface EventHeroImageProps {
   className?: string;
 }
 
-// Renders the event's hero photo (the same image used on the Teams event)
-// once captured — see events plan / project deliverables.md for the manual
-// capture step. Falls back to a brand-gradient placeholder so the section's
-// layout is still reviewable before a real photo exists.
+// Renders a brand-gradient placeholder — the permanent design for every
+// event, not a temporary stand-in. Graph's API doesn't expose a webinar's
+// registration-page banner/cover image at all (checked the actual resource
+// schemas), so there's no per-event real photo to automate; `src` stays
+// supported as an escape hatch (e.g. a hand-picked topic illustration) but
+// nothing in the events feature currently passes one.
 export function EventHeroImage({ src, alt, className = "" }: EventHeroImageProps) {
   if (src) {
     return (
@@ -26,7 +27,9 @@ export function EventHeroImage({ src, alt, className = "" }: EventHeroImageProps
       role="img"
       aria-label={alt}
     >
-      <ImageIcon className="h-10 w-10 text-white/40" />
+      {/* Same brand mark used on app/page.tsx's gradient hero slide — white
+          variant for contrast against the purple gradient background. */}
+      <Image src="/mark-white.png" alt="" width={64} height={64} className="h-14 w-auto opacity-40" />
     </div>
   );
 }
