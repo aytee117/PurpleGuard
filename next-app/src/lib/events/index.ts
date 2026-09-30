@@ -45,6 +45,15 @@ export interface EventItem {
   dek?: string;
   status: "upcoming" | "past" | "cancelled";
   startsAt: string;
+  // Best-effort end instant for calendar invites (Add to Calendar links/ICS)
+  // only — not used for isUpcoming/sort. Falls back to startsAt + 1 hour if
+  // Graph didn't return an end time.
+  endsAt: string;
+  // Wall-clock calendar date for display, e.g. "October 15, 2026" — mirrors
+  // timeLabel's "echo the local numbers back" approach, kept separate from
+  // startsAt (a real UTC instant) since formatting startsAt directly could
+  // show the wrong calendar date near a timezone-shifted midnight.
+  dateLabel: string;
   timeLabel: string;
   graphWebinarId: string;
   // Plain-paragraph description (used for manual overrides and plain-text
@@ -119,11 +128,26 @@ function formatTimeLabel(webinar: DiscoveredWebinar): string {
   return webinar.startTimeZone ? `${time} (${webinar.startTimeZone})` : time;
 }
 
+// Same "echo the naive numbers back" trick as formatTimeLabel — see the
+// comment above it for why this must not be derived from the corrected
+// startsAt instant.
+function formatDateLabel(webinar: DiscoveredWebinar): string {
+  if (!webinar.startDateTime) return "";
+  return new Date(`${webinar.startDateTime}Z`).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
   const override = manualOverrides[webinar.id];
   const startsAt = webinar.startDateTime
     ? toUtcInstant(webinar.startDateTime, webinar.startTimeZone)
     : new Date(0).toISOString();
+  const endsAt = webinar.endDateTime
+    ? toUtcInstant(webinar.endDateTime, webinar.endTimeZone ?? webinar.startTimeZone)
+    : new Date(new Date(startsAt).getTime() + 60 * 60 * 1000).toISOString();
 
   return {
     slug,
@@ -131,6 +155,8 @@ function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
     dek: override?.dek,
     status: webinar.status === "canceled" ? "cancelled" : "upcoming", // narrowed to upcoming/past below
     startsAt,
+    endsAt,
+    dateLabel: formatDateLabel(webinar),
     timeLabel: formatTimeLabel(webinar),
     graphWebinarId: webinar.id,
     description: webinar.description && !webinar.descriptionIsHtml ? [webinar.description] : [],

@@ -6,8 +6,12 @@ import { verifyTurnstileToken } from "@/lib/turnstile";
 import { getEventBySlug, isUpcoming } from "@/lib/events";
 import { registerAttendeeAndResolveJoinUrl } from "@/lib/graph/webinar";
 import { signEventRegistrationToken } from "@/lib/event-registration-token";
+import { buildRegistrationConfirmationEmail } from "@/lib/events/registration-email";
 
-const TEAM_NOTIFICATION_EMAIL = "hello@purpleguard.io";
+// Deliberately no internal "new registration" alert to hello@purpleguard.io
+// for this route — unlike the report download-request route, the team
+// checks registrations directly in Teams and doesn't want an inbox copy per
+// signup.
 const FROM_ADDRESS = "PurpleGuard <hello@notification.purpleguard.io>";
 
 const GENERIC_GRAPH_ERROR =
@@ -153,15 +157,20 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
 
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
+      const confirmation = buildRegistrationConfirmationEmail(event, joinWebUrl);
       const { error: emailError } = await resend.emails.send({
         from: FROM_ADDRESS,
         to: email,
-        replyTo: TEAM_NOTIFICATION_EMAIL,
-        subject: `You're registered: ${event.title}`,
-        html: `
-          <p>You're registered for <strong>${event.title}</strong> (${event.timeLabel}).</p>
-          <p><a href="${joinWebUrl}">Click here to join on the day</a></p>
-        `,
+        replyTo: "hello@purpleguard.io",
+        subject: confirmation.subject,
+        html: confirmation.html,
+        text: confirmation.text,
+        attachments: [
+          {
+            filename: confirmation.icsFilename,
+            content: confirmation.icsContentBase64,
+          },
+        ],
       });
       if (emailError) throw emailError;
 
@@ -170,15 +179,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
         .update({ status: "confirmed", updated_at: new Date().toISOString() })
         .eq("event_slug", slug)
         .eq("email", email);
-
-      resend.emails
-        .send({
-          from: FROM_ADDRESS,
-          to: TEAM_NOTIFICATION_EMAIL,
-          subject: `New registration: ${email} for ${event.title}`,
-          html: `<p><strong>${email}</strong> (${body.firstName} ${body.lastName}${body.company ? `, ${body.company}` : ""}) just registered for <strong>${event.title}</strong>.</p>`,
-        })
-        .catch((err) => console.error("Internal notification email failed:", err));
     } catch (err) {
       console.error("Confirmation email failed to send:", err);
       await supabase
