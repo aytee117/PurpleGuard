@@ -118,6 +118,7 @@ export default function Footer() {
                 { label: "Solutions", href: "/solutions" },
                 { label: "Pricing", href: "/pricing" },
                 { label: "Resources", href: "/blog" },
+                { label: "Events", href: "/events" },
                 { label: "Contact", href: CALENDLY_LINK },
                 { label: "PurpleVAPT Calculator", href: "/services/purple-x/purplevapt/calculator" },
                 { label: "SOC Sizing Tool", href: "/services/purple-x/purplesoc/questionnaire" },

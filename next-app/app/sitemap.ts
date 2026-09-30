@@ -1,15 +1,24 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts, blogCategories } from "@/lib/blog";
+import { getAllEvents, isUpcoming } from "@/lib/events";
 
 const BASE = "https://www.purpleguard.io";
 const NOW = new Date().toISOString();
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt ?? post.publishedAt).toISOString(),
     changeFrequency: "monthly",
     priority: 0.7,
+  }));
+
+  const allEvents = await getAllEvents();
+  const eventPages: MetadataRoute.Sitemap = allEvents.map((event) => ({
+    url: `${BASE}/events/${event.slug}`,
+    lastModified: new Date(event.startsAt).toISOString(),
+    changeFrequency: isUpcoming(event) ? "weekly" : "yearly",
+    priority: isUpcoming(event) ? 0.7 : 0.4,
   }));
 
   const blogCategoryPages: MetadataRoute.Sitemap = blogCategories.map((cat) => ({
@@ -207,8 +216,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${BASE}/events`,
+      lastModified: NOW,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
 
     ...blogCategoryPages,
     ...blogPosts,
+    ...eventPages,
   ];
 }
