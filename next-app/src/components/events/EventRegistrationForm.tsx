@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,20 +10,29 @@ import { Turnstile } from "@/components/Turnstile";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Status = "idle" | "loading" | "success" | "error";
+type Status = "checking" | "idle" | "loading" | "success" | "error";
 
-export interface ExistingRegistration {
-  joinWebUrl: string | null;
-  cancelled: boolean;
+interface RegistrationStatusResponse {
+  registered: boolean;
+  joinWebUrl?: string;
+  cancelled?: boolean;
 }
 
 interface EventRegistrationFormProps {
   eventSlug: string;
   eventTitle: string;
-  existingRegistration: ExistingRegistration | null;
 }
 
-export function EventRegistrationForm({ eventSlug, eventTitle, existingRegistration }: EventRegistrationFormProps) {
+// The "already registered" check happens client-side, against
+// /api/events/[slug]/registration-status, rather than being resolved
+// server-side and passed in as a prop. Necessary, not just a style choice:
+// app/events/[slug]/page.tsx is ISR-cached (revalidate) and shares one HTML
+// output across every visitor — it can't also read a per-visitor cookie in
+// that same render (Next.js rejects mixing a page-level `revalidate` with
+// `cookies()`, which is exactly the 500 this used to produce). Moving the
+// check here keeps the page itself cacheable and resolves the per-visitor
+// bit in the browser instead.
+export function EventRegistrationForm({ eventSlug, eventTitle }: EventRegistrationFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -32,13 +41,32 @@ export function EventRegistrationForm({ eventSlug, eventTitle, existingRegistrat
   const [consent, setConsent] = useState(false);
   const [website, setWebsite] = useState(""); // honeypot
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [status, setStatus] = useState<Status>(
-    existingRegistration && !existingRegistration.cancelled && existingRegistration.joinWebUrl ? "success" : "idle"
-  );
-  const [joinWebUrl, setJoinWebUrl] = useState<string | null>(
-    existingRegistration && !existingRegistration.cancelled ? existingRegistration.joinWebUrl : null
-  );
+  const [status, setStatus] = useState<Status>("checking");
+  const [joinWebUrl, setJoinWebUrl] = useState<string | null>(null);
+  const [previousCancelled, setPreviousCancelled] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/events/${eventSlug}/registration-status`)
+      .then((res) => res.json())
+      .then((data: RegistrationStatusResponse) => {
+        if (cancelled) return;
+        if (data.registered && data.joinWebUrl && !data.cancelled) {
+          setJoinWebUrl(data.joinWebUrl);
+          setStatus("success");
+        } else {
+          setPreviousCancelled(!!data.cancelled);
+          setStatus("idle");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("idle");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [eventSlug]);
 
   const emailValid = EMAIL_REGEX.test(email.trim());
   const valid = emailValid && !!firstName.trim() && !!lastName.trim() && !!turnstileToken;
@@ -80,6 +108,10 @@ export function EventRegistrationForm({ eventSlug, eventTitle, existingRegistrat
     }
   }
 
+  if (status === "checking") {
+    return <div className="h-64 animate-pulse rounded-2xl border border-slate-200 bg-slate-50" />;
+  }
+
   if (status === "success") {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-8">
@@ -104,7 +136,7 @@ export function EventRegistrationForm({ eventSlug, eventTitle, existingRegistrat
 
   return (
     <div className="flex flex-col gap-5">
-      {existingRegistration?.cancelled && (
+      {previousCancelled && (
         <div className="flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-[13.5px] text-amber-900">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>Your previous registration for this event was cancelled. You can register again below.</span>

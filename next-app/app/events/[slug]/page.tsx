@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
 import { CalendarDays, Clock, Globe, User } from "lucide-react";
 import { getAllEvents, getEventBySlug, isUpcoming, type EventSpeaker } from "@/lib/events";
-import { EventRegistrationForm, type ExistingRegistration } from "@/components/events/EventRegistrationForm";
+import { EventRegistrationForm } from "@/components/events/EventRegistrationForm";
 import { EventHeroImage } from "@/components/events/EventHeroImage";
-import { verifyEventRegistrationToken } from "@/lib/event-registration-token";
-import { getSupabaseAdmin } from "@/lib/supabase";
 import { listWebinarPresenters } from "@/lib/graph/webinar";
 import { breadcrumbJsonLd, ogImageUrl } from "@/lib/json-ld";
 
@@ -53,27 +50,6 @@ export async function generateMetadata({
   };
 }
 
-async function resolveExistingRegistration(slug: string): Promise<ExistingRegistration | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(`pg_reg_${slug}`)?.value;
-  if (!token) return null;
-
-  const verified = verifyEventRegistrationToken(token, slug);
-  if (!verified) return null;
-
-  const { data } = await getSupabaseAdmin()
-    .from("event_registrations")
-    .select("status, teams_status, teams_join_url")
-    .eq("event_slug", slug)
-    .eq("email", verified.email)
-    .maybeSingle<{ status: string; teams_status: string | null; teams_join_url: string | null }>();
-
-  if (!data || data.status !== "confirmed" || !data.teams_join_url) return null;
-
-  const cancelled = data.teams_status === "cancelled" || data.teams_status === "rejected";
-  return { joinWebUrl: data.teams_join_url, cancelled };
-}
-
 // Live-fetches presenters from the Teams event via Graph; falls back to the
 // event's manually-entered `speaker` field if Graph isn't configured yet
 // (expected during local dev / before the manual setup checklist is done)
@@ -104,7 +80,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   if (!event) notFound();
 
   const upcoming = isUpcoming(event);
-  const existingRegistration = upcoming ? await resolveExistingRegistration(slug) : null;
   const speakers = await resolveSpeakers(event);
 
   const breadcrumb = breadcrumbJsonLd([
@@ -190,11 +165,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
           <div>
             {upcoming ? (
-              <EventRegistrationForm
-                eventSlug={event.slug}
-                eventTitle={event.title}
-                existingRegistration={existingRegistration}
-              />
+              <EventRegistrationForm eventSlug={event.slug} eventTitle={event.title} />
             ) : (
               <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
                 <p className="text-slate-600">This event has concluded.</p>
