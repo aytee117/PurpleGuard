@@ -12,10 +12,18 @@ import { breadcrumbJsonLd, ogImageUrl } from "@/lib/json-ld";
 
 const BASE = "https://www.purpleguard.io";
 
-export const revalidate = 3600;
+// Shorter than the original 3600s: since events are now auto-discovered
+// live from Graph (not a static registry), this is the effective "how long
+// until a newly published webinar shows up" window. Lower further if 5
+// minutes is still too slow; each revalidation is one Graph API call.
+export const revalidate = 300;
 
-export function generateStaticParams() {
-  return getAllEvents().map((event) => ({ slug: event.slug }));
+export async function generateStaticParams() {
+  // Best-effort warm cache of currently-known slugs at build time — a slug
+  // published after this still renders fine on first request (Next's
+  // default dynamicParams behavior) and gets cached per `revalidate` above.
+  const events = await getAllEvents();
+  return events.map((event) => ({ slug: event.slug }));
 }
 
 export async function generateMetadata({
@@ -24,7 +32,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) return {};
 
   const url = `/events/${event.slug}`;
@@ -92,7 +100,7 @@ async function resolveSpeakers(event: {
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) notFound();
 
   const upcoming = isUpcoming(event);

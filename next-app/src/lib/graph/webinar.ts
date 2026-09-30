@@ -198,6 +198,69 @@ export async function registerAttendeeAndResolveJoinUrl(
 }
 
 // ---------------------------------------------------------------------------
+// Discovery — lists published webinars tenant-wide so the events hub can
+// auto-discover a newly published event instead of needing a manual code
+// change per event. Same VirtualEvent.Read.All application permission as
+// listWebinarPresenters below — no separate consent needed.
+//
+// Gotcha from Microsoft's own docs, worth remembering if a webinar doesn't
+// show up: "This API returns only webinars whose organizer has been
+// assigned an application access policy" — an organizer who was never
+// granted the Teams Application Access Policy (see manual setup checklist)
+// won't have their webinars appear here at all, even if published.
+// ---------------------------------------------------------------------------
+
+export interface DiscoveredWebinar {
+  id: string;
+  displayName: string;
+  description: string | null;
+  status: "draft" | "published" | "canceled" | string;
+  audience: string;
+  startDateTime: string | null; // Graph's raw local wall-clock time, no UTC offset
+  startTimeZone: string | null; // Windows time zone name, e.g. "Arabian Standard Time"
+  endDateTime: string | null;
+  endTimeZone: string | null;
+}
+
+interface RawWebinar {
+  id: string;
+  displayName: string;
+  description?: { content?: string } | string | null;
+  status: string;
+  audience: string;
+  startDateTime?: { dateTime?: string; timeZone?: string };
+  endDateTime?: { dateTime?: string; timeZone?: string };
+}
+
+export async function listPublishedWebinars(): Promise<DiscoveredWebinar[]> {
+  const res = await graphFetch(`/solutions/virtualEvents/webinars`);
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`listPublishedWebinars failed (${res.status}): ${body}`);
+  }
+
+  const data = (await res.json()) as { value?: RawWebinar[] };
+
+  return (data.value ?? [])
+    // Only publicly-visible, published webinars — an "organization"-scoped
+    // (internal-only) webinar should never surface on the public site even
+    // if published.
+    .filter((w) => w.status === "published" && w.audience !== "organization")
+    .map((w) => ({
+      id: w.id,
+      displayName: w.displayName,
+      description: typeof w.description === "string" ? w.description : w.description?.content ?? null,
+      status: w.status,
+      audience: w.audience,
+      startDateTime: w.startDateTime?.dateTime ?? null,
+      startTimeZone: w.startDateTime?.timeZone ?? null,
+      endDateTime: w.endDateTime?.dateTime ?? null,
+      endTimeZone: w.endDateTime?.timeZone ?? null,
+    }));
+}
+
+// ---------------------------------------------------------------------------
 // Presenters — read-only, used to populate the event page's speaker section
 // live from Teams instead of hand-entering it. Requires a separate
 // application permission from registration: VirtualEvent.Read.All (see

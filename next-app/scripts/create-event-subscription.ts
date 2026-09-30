@@ -1,11 +1,14 @@
 // One-off, run once per new event after its webinar is published in Teams
-// and its graphWebinarId is added to src/lib/events/index.ts — creates the
-// Graph change-notification subscription that powers two-way sync (see the
-// events plan §6). A missed run just degrades that one event to one-way
-// sync; it doesn't break registration itself.
+// (events are now auto-discovered from Graph — src/lib/events/index.ts, no
+// manual registry entry needed) — creates the Graph change-notification
+// subscription that powers two-way sync (see the events plan §6). A missed
+// run just degrades that one event to one-way sync; it doesn't break
+// registration itself.
 //
 // Usage:
 //   npx tsx scripts/create-event-subscription.ts <event-slug>
+//   (find the slug by checking /events after the webinar is published — it's
+//   derived from the webinar's title)
 
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
@@ -22,9 +25,9 @@ async function main() {
     process.exit(1);
   }
 
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) {
-    console.error(`No event found in src/lib/events/index.ts with slug "${slug}".`);
+    console.error(`No published webinar found with slug "${slug}" (events are auto-discovered from Graph — run npm run dev/build and check /events to see the current slug list).`);
     process.exit(1);
   }
 

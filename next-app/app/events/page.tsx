@@ -4,7 +4,10 @@ import { EventCard } from "@/components/events/EventCard";
 import { YoutubeRecordingsRail } from "@/components/events/YoutubeRecordingsRail";
 import { breadcrumbJsonLd } from "@/lib/json-ld";
 
-export const revalidate = 3600;
+// Shorter than the original 3600s — events are now auto-discovered live
+// from Graph, so this is the "how long until a newly published webinar
+// shows up" window. Lower further if 5 minutes is still too slow.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: { absolute: "Upcoming Events & Webinars | PurpleGuard" },
@@ -24,8 +27,8 @@ const breadcrumb = breadcrumbJsonLd([
   { name: "Events", url: "/events" },
 ]);
 
-export default function EventsPage() {
-  const events = getUpcomingEvents();
+export default async function EventsPage() {
+  const events = await getUpcomingEvents();
 
   return (
     <>

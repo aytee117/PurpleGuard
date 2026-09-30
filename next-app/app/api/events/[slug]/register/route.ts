@@ -61,7 +61,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ slu
     return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 400 });
   }
 
-  const event = getEventBySlug(slug);
+  const event = await getEventBySlug(slug);
   if (!event) {
     return NextResponse.json({ error: "Unknown event." }, { status: 404 });
   }
