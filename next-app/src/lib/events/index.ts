@@ -21,15 +21,14 @@
 // fetch — a newly published webinar shows up within that window, not
 // instantly. Lower the revalidate value on those pages if that lag matters.
 //
-// Known approximation, not hidden: Graph's startDateTime/endDateTime are a
-// local wall-clock time plus a *Windows* time zone name (not an IANA name
-// and not a UTC offset) — there's no lightweight way to convert that to an
-// exact instant without a Windows→IANA mapping table this repo doesn't have.
-// The raw local time + zone name is shown as-is (timeLabel below), and
-// isUpcoming/sort treat the wall-clock time as UTC for comparison purposes,
-// which can be off by the zone's real offset right at the boundary between
-// "upcoming" and "past". Acceptable for now; revisit if that boundary error
-// ever actually matters for a real event.
+// Graph's startDateTime/endDateTime are a local wall-clock time plus a
+// *Windows* time zone name (not an IANA name, not a UTC offset). The raw
+// local time + zone name is shown as-is (timeLabel below). For the
+// upcoming/past comparison, WINDOWS_TZ_OFFSET_MINUTES converts to a real UTC
+// instant for the zones this org actually uses — an unmapped zone still
+// falls back to treating the wall-clock time as UTC, which was the original
+// blanket behavior and caused an already-ended event (real zone UTC+2/3/4)
+// to keep showing as upcoming/registrable for hours after it ended.
 
 import { listPublishedWebinars, type DiscoveredWebinar } from "@/lib/graph/webinar";
 import { sanitizeEventDescriptionHtml } from "@/lib/sanitize-html";
@@ -81,6 +80,36 @@ function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+// Windows time zone name -> fixed UTC offset in minutes, for the zones this
+// organization actually runs events in. None of these observe DST currently
+// (Egypt suspended it), so a fixed offset is safe. An unmapped zone falls
+// back to treating the wall-clock time as UTC (the previous blanket
+// behavior) — still an approximation, but now only for a zone that's never
+// actually been used.
+const WINDOWS_TZ_OFFSET_MINUTES: Record<string, number> = {
+  "Arabian Standard Time": 4 * 60, // UAE, Oman — UTC+4
+  "Arab Standard Time": 3 * 60, // Saudi Arabia, Kuwait, Qatar, Bahrain — UTC+3
+  "Egypt Standard Time": 2 * 60, // Egypt — UTC+2
+};
+
+// The real UTC instant, used for the upcoming/past comparison and sorting —
+// unlike formatTimeLabel below, this must not just echo the wall-clock
+// numbers back. Naively treating local time as UTC made an already-ended
+// event (in UTC+2/3/4) look hours away from starting, keeping it visible
+// and registrable well past when it actually ended.
+function toUtcInstant(localDateTime: string, windowsTimeZone: string | null): string {
+  const offsetMinutes = windowsTimeZone ? WINDOWS_TZ_OFFSET_MINUTES[windowsTimeZone] : undefined;
+  if (offsetMinutes === undefined) return `${localDateTime}Z`;
+  return new Date(new Date(`${localDateTime}Z`).getTime() - offsetMinutes * 60_000).toISOString();
+}
+
+// Deliberately keeps the naive "treat local time as UTC" trick: on a
+// UTC-default server runtime (Vercel's Node functions), formatting that
+// naive instant with no explicit timeZone option just echoes back the
+// original wall-clock numbers — which is exactly what should be displayed
+// next to the zone name. Do not "fix" this using toUtcInstant above; that
+// would shift the displayed time into the server's zone instead of showing
+// the event's own local time.
 function formatTimeLabel(webinar: DiscoveredWebinar): string {
   if (!webinar.startDateTime) return "";
   const time = new Date(`${webinar.startDateTime}Z`).toLocaleTimeString("en-US", {
@@ -92,7 +121,9 @@ function formatTimeLabel(webinar: DiscoveredWebinar): string {
 
 function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
   const override = manualOverrides[webinar.id];
-  const startsAt = webinar.startDateTime ? `${webinar.startDateTime}Z` : new Date(0).toISOString();
+  const startsAt = webinar.startDateTime
+    ? toUtcInstant(webinar.startDateTime, webinar.startTimeZone)
+    : new Date(0).toISOString();
 
   return {
     slug,
