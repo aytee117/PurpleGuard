@@ -33,7 +33,13 @@ export async function generateMetadata({
   if (!event) return {};
 
   const url = `/events/${event.slug}`;
-  const description = event.dek ?? event.description[0] ?? event.title;
+  const plainTextExcerpt = event.descriptionHtml
+    ?.replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160);
+  const description = event.dek ?? event.description[0] ?? plainTextExcerpt ?? event.title;
   const og = ogImageUrl({ title: event.title, subtitle: event.timeLabel, category: "Event" });
 
   return {
@@ -123,11 +129,18 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
         <section className="mx-auto grid max-w-4xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.3fr_1fr] lg:py-16">
           <div className="flex flex-col gap-5">
-            {event.description.map((paragraph, i) => (
-              <p key={i} className="text-[15px] leading-relaxed text-slate-700">
-                {paragraph}
-              </p>
-            ))}
+            {event.descriptionHtml ? (
+              <div
+                className="prose prose-slate max-w-none text-[15px] leading-relaxed prose-p:text-slate-700 prose-li:text-slate-700"
+                dangerouslySetInnerHTML={{ __html: event.descriptionHtml }}
+              />
+            ) : (
+              event.description.map((paragraph, i) => (
+                <p key={i} className="text-[15px] leading-relaxed text-slate-700">
+                  {paragraph}
+                </p>
+              ))
+            )}
 
             {event.takeaways && event.takeaways.length > 0 && (
               <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-6">

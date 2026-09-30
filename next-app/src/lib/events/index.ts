@@ -23,6 +23,7 @@
 // ever actually matters for a real event.
 
 import { listPublishedWebinars, type DiscoveredWebinar } from "@/lib/graph/webinar";
+import { sanitizeEventDescriptionHtml } from "@/lib/sanitize-html";
 
 export interface EventSpeaker {
   name: string;
@@ -38,7 +39,12 @@ export interface EventItem {
   startsAt: string;
   timeLabel: string;
   graphWebinarId: string;
+  // Plain-paragraph description (used for manual overrides and plain-text
+  // Graph descriptions). When Teams' rich-text editor was used, Graph
+  // returns HTML instead — that comes through as `descriptionHtml` (already
+  // sanitized) and takes priority over this when both are present.
   description: string[];
+  descriptionHtml?: string;
   takeaways?: string[];
   speaker?: EventSpeaker;
   heroImage?: string;
@@ -90,7 +96,11 @@ function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
     startsAt,
     timeLabel: formatTimeLabel(webinar),
     graphWebinarId: webinar.id,
-    description: webinar.description ? [webinar.description] : [],
+    description: webinar.description && !webinar.descriptionIsHtml ? [webinar.description] : [],
+    descriptionHtml:
+      webinar.description && webinar.descriptionIsHtml
+        ? sanitizeEventDescriptionHtml(webinar.description)
+        : undefined,
     takeaways: override?.takeaways,
     speaker: override?.speaker,
     heroImage: override?.heroImage,

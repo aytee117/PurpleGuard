@@ -214,6 +214,11 @@ export interface DiscoveredWebinar {
   id: string;
   displayName: string;
   description: string | null;
+  // Teams' rich-text editor (bullets, bold, etc.) returns description as
+  // HTML (itemBody.contentType === "html") rather than plain text — the
+  // caller needs to know which, since an HTML description must be
+  // sanitized and rendered as markup, not printed as literal text.
+  descriptionIsHtml: boolean;
   status: "draft" | "published" | "canceled" | string;
   audience: string;
   startDateTime: string | null; // Graph's raw local wall-clock time, no UTC offset
@@ -225,7 +230,7 @@ export interface DiscoveredWebinar {
 interface RawWebinar {
   id: string;
   displayName: string;
-  description?: { content?: string } | string | null;
+  description?: { content?: string; contentType?: string } | string | null;
   status: string;
   audience: string;
   startDateTime?: { dateTime?: string; timeZone?: string };
@@ -251,6 +256,7 @@ export async function listPublishedWebinars(): Promise<DiscoveredWebinar[]> {
       id: w.id,
       displayName: w.displayName,
       description: typeof w.description === "string" ? w.description : w.description?.content ?? null,
+      descriptionIsHtml: typeof w.description === "object" && w.description?.contentType === "html",
       status: w.status,
       audience: w.audience,
       startDateTime: w.startDateTime?.dateTime ?? null,
