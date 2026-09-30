@@ -115,18 +115,25 @@ export async function findRegistrationByEmail(
   webinarId: string,
   email: string
 ): Promise<{ id: string } | null> {
-  const escapedEmail = email.replace(/'/g, "''");
-  const filter = encodeURIComponent(`email eq '${escapedEmail}'`);
-  const res = await graphFetch(`/solutions/virtualEvents/webinars/${webinarId}/registrations?$filter=${filter}`);
+  // Graph's own docs for this endpoint are explicit: "This method doesn't
+  // support OData query parameters to help customize the response." An
+  // earlier version of this function sent `$filter=email eq '...'` anyway —
+  // Graph doesn't reject the unsupported parameter cleanly, it fails with a
+  // confusing, unrelated 404 ("Attendee registration not found by user
+  // principal name"), which looked like the registration itself was missing
+  // when it was really just an unsupported query string. Fetch the full
+  // (per-webinar, so bounded) list and match by email client-side instead.
+  const res = await graphFetch(`/solutions/virtualEvents/webinars/${webinarId}/registrations`);
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`findRegistrationByEmail failed (${res.status}): ${body}`);
   }
 
-  const data = (await res.json()) as { value?: Array<{ id: string }> };
-  const first = data.value?.[0];
-  return first ? { id: first.id } : null;
+  const data = (await res.json()) as { value?: Array<{ id: string; email?: string }> };
+  const normalized = email.trim().toLowerCase();
+  const match = data.value?.find((r) => r.email?.trim().toLowerCase() === normalized);
+  return match ? { id: match.id } : null;
 }
 
 export async function getJoinWebUrl(webinarId: string, registrationId: string): Promise<string | null> {
