@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CheckCircle2 } from "lucide-react";
-import { Turnstile } from "./Turnstile";
+import { Turnstile } from "@/components/Turnstile";
 import { egyptThreatIntelH1_2026 } from "@/lib/reports/egypt-threat-intel-h1-2026";
 
 // TEMP: unused while the waitlist capture endpoint is active — restore the

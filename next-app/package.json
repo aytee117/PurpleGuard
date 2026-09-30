@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -p 5000",
     "lint": "next lint",
-    "import-registrants": "tsx scripts/import-registrants.ts"
+    "import-registrants": "tsx scripts/import-registrants.ts",
+    "create-event-subscription": "tsx scripts/create-event-subscription.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

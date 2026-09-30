@@ -55,6 +55,7 @@ const resourcesItems = [
 ];
 
 const navigationItems = [
+  { label: "Events", href: "/events" },
   { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
 ];
