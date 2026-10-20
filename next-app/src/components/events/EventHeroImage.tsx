@@ -6,12 +6,11 @@ interface EventHeroImageProps {
   className?: string;
 }
 
-// Renders a brand-gradient placeholder — the permanent design for every
-// event, not a temporary stand-in. Graph's API doesn't expose a webinar's
-// registration-page banner/cover image at all (checked the actual resource
-// schemas), so there's no per-event real photo to automate; `src` stays
-// supported as an escape hatch (e.g. a hand-picked topic illustration) but
-// nothing in the events feature currently passes one.
+// Renders a brand-gradient placeholder by default — Graph's API doesn't
+// expose a webinar's registration-page banner/cover image at all (checked
+// the actual resource schemas), so there's no way to auto-pull a per-event
+// photo. `src` (an event's manual `heroImage` override, see
+// src/lib/events/index.ts) renders a real photo instead when one is set.
 export function EventHeroImage({ src, alt, className = "" }: EventHeroImageProps) {
   if (src) {
     return (

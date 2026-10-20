@@ -122,10 +122,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           </div>
         </header>
 
-        {/* Brand-gradient placeholder, directly under the date/time/language row — the real
-            Teams registration-page image per event, confirmed unavailable via the Graph API */}
+        {/* Directly under the date/time/language row. Uses the event's manual
+            heroImage override when set, else the brand-gradient placeholder —
+            the real Teams registration-page image is confirmed unavailable
+            via the Graph API, so there's no way to auto-pull one. */}
         <section className="mx-auto max-w-4xl px-4 pt-10 sm:px-6">
-          <EventHeroImage alt={event.title} className="aspect-[21/9] w-full rounded-2xl" />
+          <EventHeroImage src={event.heroImage} alt={event.title} className="aspect-[21/9] w-full rounded-2xl" />
         </section>
 
         <section className="mx-auto grid max-w-4xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.3fr_1fr] lg:py-16">

@@ -2,19 +2,19 @@
 // Microsoft Graph (listPublishedWebinars) so a newly published event shows
 // up on /events without a code change. `manualOverrides` below is the only
 // hand-maintained part: optional cosmetic extras (takeaways, speaker
-// fallback, a shorter dek) that Graph's webinar object doesn't carry, keyed
-// by the webinar's own Graph id — never required, an event with no override
-// entry still displays fine using Graph's own title and description alone.
+// fallback, a shorter dek, a hero photo) that Graph's webinar object doesn't
+// carry, keyed by the event's slug — never required, an event with no
+// override entry still displays fine using Graph's own title and
+// description alone, and the brand-gradient placeholder (EventHeroImage) as
+// its hero image.
 //
-// Deliberately no per-event hero photo: confirmed against the actual Graph
-// schema (virtualEventWebinar, virtualEventSettings,
+// No per-event hero photo is ever auto-pulled from Teams: confirmed against
+// the actual Graph schema (virtualEventWebinar, virtualEventSettings,
 // virtualEventWebinarRegistrationConfiguration) that no banner/cover image
-// is exposed via the API at all, so there's no way to auto-pull the real
-// Teams registration-page image. Rather than make hero photos a recurring
-// manual per-event chore (upload a file, add an override, redeploy — for
-// every single event, forever), every event uses the brand-gradient
-// placeholder (EventHeroImage) as its real, permanent design. Revisit only
-// if Microsoft ever exposes this via the API.
+// is exposed via the API at all. A hero photo is therefore a manual,
+// opt-in override per event (upload the file under public/events/, add one
+// line below) rather than a required per-event chore — most events are
+// expected to just use the placeholder.
 //
 // Cache/refresh note: this now depends on a live external call, fronted by
 // Next's ISR (`revalidate` on the hub/detail pages) rather than a per-request
@@ -64,22 +64,27 @@ export interface EventItem {
   descriptionHtml?: string;
   takeaways?: string[];
   speaker?: EventSpeaker;
+  heroImage?: string;
 }
 
 interface ManualOverride {
   dek?: string;
   takeaways?: string[];
   speaker?: EventSpeaker;
+  heroImage?: string;
 }
 
-// Optional, keyed by the webinar's Graph id (copy it from the discovered
-// event once it exists — e.g. from Graph Explorer's
-// GET /solutions/virtualEvents/webinars response). Example:
+// Optional, keyed by the event's slug (visible directly in its /events/[slug]
+// URL — no need to look up the webinar's Graph id for this). Example:
 //
-// "88b245ac-b0b2-f1aa-e34a-c81c27abdac2@f9448ec4-804b-46af-b810-62085248da33": {
-//   takeaways: ["...", "..."],
+// "assume-breach-managed-detection-and-response-for-teams-without-a-24-7-soc": {
+//   heroImage: "/events/assume-breach-hero.webp",
 // },
-const manualOverrides: Record<string, ManualOverride> = {};
+const manualOverrides: Record<string, ManualOverride> = {
+  "assume-breach-managed-detection-and-response-for-teams-without-a-24-7-soc": {
+    heroImage: "/events/assume-breach-hero.webp",
+  },
+};
 
 function slugify(input: string): string {
   return input
@@ -141,7 +146,7 @@ function formatDateLabel(webinar: DiscoveredWebinar): string {
 }
 
 function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
-  const override = manualOverrides[webinar.id];
+  const override = manualOverrides[slug];
   const startsAt = webinar.startDateTime
     ? toUtcInstant(webinar.startDateTime, webinar.startTimeZone)
     : new Date(0).toISOString();
@@ -166,6 +171,7 @@ function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
         : undefined,
     takeaways: override?.takeaways,
     speaker: override?.speaker,
+    heroImage: override?.heroImage,
   };
 }
 
