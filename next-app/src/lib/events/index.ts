@@ -64,7 +64,13 @@ export interface EventItem {
   descriptionHtml?: string;
   takeaways?: string[];
   speaker?: EventSpeaker;
+  // Detail-page hero (below the date/time/language row). `cardHeroImage`
+  // falls back to this when an event only has one photo (e.g. Assume
+  // Breach) rather than a separate crop per surface.
   heroImage?: string;
+  // Hub-page card thumbnail. Optional even when `heroImage` is set — an
+  // event can supply just one photo and have it used on both surfaces.
+  cardHeroImage?: string;
 }
 
 interface ManualOverride {
@@ -72,6 +78,7 @@ interface ManualOverride {
   takeaways?: string[];
   speaker?: EventSpeaker;
   heroImage?: string;
+  cardHeroImage?: string;
 }
 
 // Optional, keyed by the event's slug (visible directly in its /events/[slug]
@@ -83,6 +90,10 @@ interface ManualOverride {
 const manualOverrides: Record<string, ManualOverride> = {
   "assume-breach-managed-detection-and-response-for-teams-without-a-24-7-soc": {
     heroImage: "/events/assume-breach-hero.webp",
+  },
+  "never-off-duty-compliance-first-socaas": {
+    heroImage: "/events/never-off-duty-page-hero.png",
+    cardHeroImage: "/events/never-off-duty-card-hero.png",
   },
 };
 
@@ -172,6 +183,7 @@ function toEventItem(webinar: DiscoveredWebinar, slug: string): EventItem {
     takeaways: override?.takeaways,
     speaker: override?.speaker,
     heroImage: override?.heroImage,
+    cardHeroImage: override?.cardHeroImage,
   };
 }
 
