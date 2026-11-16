@@ -37,6 +37,11 @@ export interface EventSpeaker {
   name: string;
   title: string;
   photo?: string;
+  // Paragraphs. Graph's presenter list doesn't carry these to us, so they
+  // come from the manual override and are merged onto the matching Graph
+  // presenter by name (see resolveSpeakers in app/events/[slug]/page.tsx).
+  bio?: string[];
+  linkedinUrl?: string;
 }
 
 export interface EventItem {
@@ -94,6 +99,16 @@ const manualOverrides: Record<string, ManualOverride> = {
   "never-off-duty-compliance-first-socaas": {
     heroImage: "/events/never-off-duty-page-hero.png",
     cardHeroImage: "/events/never-off-duty-card-hero.png",
+    speaker: {
+      name: "Mohamed Mowafy",
+      title: "Co-Founder and CEO, PurpleGuard",
+      photo: "/events/mohamed-mowafy.webp",
+      linkedinUrl: "https://www.linkedin.com/in/mohamed-mowafy/",
+      bio: [
+        "A cybersecurity guru with well-rounded experience in orchestrating solutions that provide tight security postures for networks, applications, and datacenters. Mowafy is the Co-Founder and CEO of PurpleGuard, and has helped hundreds of SMEs and Enterprises deploy compliant, cutting-edge solutions while advising on the best scenarios to balance security policies, business goals and technology spend.",
+        "Mohamed leads PurpleGuard's Managed Security Services Provider (MSSP) practice, specializing in building economically optimized, SLA-backed SOC and MDR frameworks that allow enterprises to consolidate security vendors and scale coverage dynamically.",
+      ],
+    },
   },
 };
 

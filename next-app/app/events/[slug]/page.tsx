@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CalendarDays, Clock, Globe, User } from "lucide-react";
+import Image from "next/image";
+import { CalendarDays, Clock, ExternalLink, Globe, User } from "lucide-react";
 import { getAllEvents, getEventBySlug, isUpcoming, type EventSpeaker } from "@/lib/events";
 import { EventRegistrationForm } from "@/components/events/EventRegistrationForm";
 import { EventHeroImage } from "@/components/events/EventHeroImage";
@@ -68,10 +69,21 @@ async function resolveSpeakers(event: {
   try {
     const presenters = await listWebinarPresenters(event.graphWebinarId);
     if (presenters.length > 0) {
-      return presenters.map((p) => ({
-        name: p.displayName,
-        title: [p.jobTitle, p.company].filter(Boolean).join(", "),
-      }));
+      // Graph supplies name/title only; layer the override's photo, bio and
+      // LinkedIn onto the presenter with the same name so adding the person
+      // in Teams later doesn't drop them.
+      const normalize = (s: string) => s.trim().toLowerCase();
+      return presenters.map((p) => {
+        const extra =
+          event.speaker && normalize(event.speaker.name) === normalize(p.displayName) ? event.speaker : undefined;
+        return {
+          name: p.displayName,
+          title: [p.jobTitle, p.company].filter(Boolean).join(", ") || extra?.title || "",
+          photo: extra?.photo,
+          bio: extra?.bio,
+          linkedinUrl: extra?.linkedinUrl,
+        };
+      });
     }
   } catch {
     // Graph not configured yet, or the call failed — fall through to the
@@ -162,16 +174,44 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             {speakers.length > 0 && (
               <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-6">
                 <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Presenter</h2>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-6">
                   {speakers.map((speaker, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f3eefc] text-[#6633cc]">
-                        <User className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <p className="font-semibold text-slate-900">{speaker.name}</p>
-                        {speaker.title && <p className="text-sm text-slate-600">{speaker.title}</p>}
+                    <div key={i} className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        {speaker.photo ? (
+                          <Image
+                            src={speaker.photo}
+                            alt={speaker.name}
+                            width={56}
+                            height={56}
+                            className="h-14 w-14 shrink-0 rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-50 text-purple-500">
+                            <User className="h-5 w-5" />
+                          </span>
+                        )}
+                        <div>
+                          <p className="font-semibold text-slate-900">{speaker.name}</p>
+                          {speaker.title && <p className="text-sm text-slate-600">{speaker.title}</p>}
+                          {speaker.linkedinUrl && (
+                            <a
+                              href={speaker.linkedinUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-0.5 inline-flex items-center gap-1 text-sm font-medium text-purple-500 hover:text-purple-600"
+                            >
+                              LinkedIn profile
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </a>
+                          )}
+                        </div>
                       </div>
+                      {speaker.bio?.map((paragraph, j) => (
+                        <p key={j} className="text-[14.5px] leading-relaxed text-slate-700">
+                          {paragraph}
+                        </p>
+                      ))}
                     </div>
                   ))}
                 </div>
